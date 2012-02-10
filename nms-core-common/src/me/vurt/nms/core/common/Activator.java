@@ -29,7 +29,7 @@ public class Activator implements BundleActivator {
 			Logger logger=LoggerFactory.getLogger(Activator.class);
 			logger.info("logger started!");
 		}else{
-			System.err.println("没有找到日志配置文件");
+			System.err.println("没有找到日志文件");
 		}
 	}
 
