@@ -4,14 +4,17 @@ Bundle-Name: Node manage system common tools
 Bundle-SymbolicName: nms-core-common
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: me.vurt.nms.core.common.Activator
-Import-Package: org.osgi.framework;version="1.3.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ClassPath: .,
  lib/slf4j-log4j12-1.6.1.jar,
  lib/log4j-1.2.16.jar,
  lib/slf4j-api-1.6.1.jar,
  lib/jcl-over-slf4j-1.6.1.jar
-Export-Package: org.apache.log4j;uses:="org.apache.log4j.helpers,org.apache.log4j.or,org.apache.log4j.spi",
+Export-Package: me.vurt.nms.core.common.io,
+ me.vurt.nms.core.common.tools,
+ org.apache.log4j;uses:="org.apache.log4j.helpers,org.apache.log4j.or,org.apache.log4j.spi",
  org.slf4j;uses:="org.slf4j.spi,org.slf4j.helpers",
  org.slf4j.spi;uses:="org.slf4j"
 Bundle-ActivationPolicy: lazy
+Require-Bundle: org.springframework.core;bundle-version="2.5.6",
+ org.eclipse.osgi;bundle-version="3.2.2"
