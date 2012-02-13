@@ -1,16 +1,20 @@
 package me.vurt.nms.core.jms;
 
+import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
 
+import me.vurt.nms.core.common.tools.GlobalConfigFileReader;
 import me.vurt.nms.core.jms.exception.InvalidJMSConfigException;
+import me.vurt.nms.core.jms.impl.MessageListenerAdapter2;
 import me.vurt.nms.core.jms.impl.MessageProducerImpl;
 import me.vurt.nms.core.jms.util.EmptyDestination;
 import me.vurt.nms.core.jms.util.JMSUtil;
 import me.vurt.nms.core.jms.util.MessageListenerCache;
 
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.jms.listener.DefaultMessageListenerContainer;
+import org.springframework.util.Assert;
 
 /**
  * NMS JMS工具工厂
@@ -19,8 +23,9 @@ import org.springframework.jms.listener.DefaultMessageListenerContainer;
  * 
  */
 public class JMSFactory {
-	private static final ApplicationContext context = new ClassPathXmlApplicationContext(
-			"conf/spring-jms.xml");
+	private static final ApplicationContext context = new FileSystemXmlApplicationContext(
+			GlobalConfigFileReader.getConfigFile("spring-jms.xml")
+					.getAbsolutePath());
 
 	/**
 	 * 消息生产者bean名称
@@ -30,6 +35,10 @@ public class JMSFactory {
 	 * 消息监听器bean名称
 	 */
 	public static final String LISTENER_CONTAINER_BEAN_NAME = "listenerContainer";
+	/**
+	 * 连接工程bean名称
+	 */
+	public static final String CONNECTION_FACTORY_BEAN_NAME = "connectionFactory";
 
 	/**
 	 * 新建消息生产者实例
@@ -59,21 +68,35 @@ public class JMSFactory {
 		if (MessageListenerCache.hasListener(destination)) {
 			return MessageListenerCache.getCachedMessageListener(destination);
 		} else {
-			DefaultMessageListenerContainer listenerContainer = (DefaultMessageListenerContainer) context
-					.getBean(LISTENER_CONTAINER_BEAN_NAME);
-			if (listenerContainer == null)
-				throw new InvalidJMSConfigException("messageListener配置错误");
+			if (EmptyDestination.INSTANCE.equals(destination)) {
+				destination = (Destination) context
+						.getBean("defaultDestination");
+			}
 
-			if (!EmptyDestination.INSTANCE.equals(destination))
-				listenerContainer.setDestination(destination);
+			DefaultMessageListenerContainer listenerContainer = createListenerContainer(destination);
 
 			MessageListener listener = JMSUtil
 					.getInnerListener(listenerContainer);
-			listener.setDestination(listenerContainer.getDestination());
-			
+
 			MessageListenerCache.put(listenerContainer);
-			
+
 			return listener;
 		}
+	}
+
+	public static DefaultMessageListenerContainer createListenerContainer(
+			Destination destination) {
+		Assert.notNull(destination, "destination不允许为空");
+		DefaultMessageListenerContainer listenerContainer = new DefaultMessageListenerContainer();
+		listenerContainer.setConnectionFactory((ConnectionFactory) context
+				.getBean(CONNECTION_FACTORY_BEAN_NAME));
+		listenerContainer.setDestination(destination);
+
+		MessageListenerAdapter2 adapter = new MessageListenerAdapter2(
+				new MessageListener());
+		adapter.setDefaultListenerMethod(MessageListener.MESSAGE_HANDLE_MOTHED_NAME);
+		listenerContainer.setMessageListener(adapter);
+
+		return listenerContainer;
 	}
 }

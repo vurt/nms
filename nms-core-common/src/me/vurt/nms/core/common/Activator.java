@@ -3,6 +3,8 @@ package me.vurt.nms.core.common;
 import java.io.InputStream;
 import java.util.Properties;
 
+import me.vurt.nms.core.common.tools.GlobalConfigFileReader;
+
 import org.apache.log4j.LogManager;
 import org.apache.log4j.PropertyConfigurator;
 import org.osgi.framework.BundleActivator;
@@ -31,6 +33,7 @@ public class Activator implements BundleActivator {
 		}else{
 			System.err.println("没有找到日志文件");
 		}
+		GlobalConfigFileReader.init();
 	}
 
 	public void stop(BundleContext context) throws Exception {

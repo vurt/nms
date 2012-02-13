@@ -57,6 +57,11 @@ public class MessageListener {
 	 * 消息处理器Map，Key是处理器id，Value是处理器实例
 	 */
 	private Map<String, MessageHandler> handlers = new LinkedHashMap<String, MessageHandler>();
+	
+	/**
+	 * 消息处理方法的方法名
+	 */
+	public static final String MESSAGE_HANDLE_MOTHED_NAME="messageReceived";
 
 	public void messageReceived(Object msg) {
 		LOGGER.debug("Received one msg:" + msg.toString());

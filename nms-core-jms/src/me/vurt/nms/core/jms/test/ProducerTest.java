@@ -10,12 +10,12 @@ import org.slf4j.LoggerFactory;
  * 
  */
 public class ProducerTest {
-	public static final Logger LOGGER=LoggerFactory.getLogger(ProducerTest.class);
-	
+	public static final Logger LOGGER = LoggerFactory
+			.getLogger(ProducerTest.class);
+
 	public static void main(String[] args) {
-		JMSFactory.createProducer().send("测试信息");
-		JMSFactory.getMessageListener(null);
-		JMSFactory.getMessageListener(null);
+		// JMSFactory.getMessageListener(null);
+		 JMSFactory.createProducer().send("测试信息");
 	}
 
 }
