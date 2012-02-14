@@ -1,4 +1,4 @@
-package me.vurt.nms.core.jms;
+锘縫ackage me.vurt.nms.core.jms;
 
 /**
  * @author yanyl
@@ -6,12 +6,12 @@ package me.vurt.nms.core.jms;
  */
 public interface MessageHandler {
 	/**
-	 * 返回处理器ID
+	 * 杩斿洖澶勭悊鍣↖D
 	 * @return
 	 */
 	String getId();
 	/**
-	 * 处理消息
+	 * 澶勭悊娑堟伅
 	 * @param msg
 	 */
 	void handle(Object msg);

@@ -1,4 +1,4 @@
-package me.vurt.nms.core.jms.util;
+ï»¿package me.vurt.nms.core.jms.util;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,12 +15,12 @@ import org.springframework.jms.listener.DefaultMessageListenerContainer;
  */
 public class MessageListenerCache {
 	/**
-	 * ´¢´æÄ¿µÄµØºÍ¼àÌıÆ÷µÄMap
+	 * å‚¨å­˜ç›®çš„åœ°å’Œç›‘å¬å™¨çš„Map
 	 */
 	private static Map<Destination, DefaultMessageListenerContainer> listenerMap = new HashMap<Destination, DefaultMessageListenerContainer>();
 
 	/**
-	 * ÊÇ·ñ´æÔÚ¸ÃÄ¿µÄµØµÄ¼àÌıÆ÷
+	 * æ˜¯å¦å­˜åœ¨è¯¥ç›®çš„åœ°çš„ç›‘å¬å™¨
 	 * 
 	 * @param destination
 	 * @return
@@ -30,7 +30,7 @@ public class MessageListenerCache {
 	}
 
 	/**
-	 * »ñÈ¡ÒÑ»º´æµÄÏûÏ¢¼àÌıÆ÷
+	 * è·å–å·²ç¼“å­˜çš„æ¶ˆæ¯ç›‘å¬å™¨
 	 * @param destination
 	 * @return
 	 */
@@ -40,7 +40,7 @@ public class MessageListenerCache {
 	}
 	
 	/**
-	 * ´¢´æÏûÏ¢¼àÌıÆ÷ÈİÆ÷
+	 * å‚¨å­˜æ¶ˆæ¯ç›‘å¬å™¨å®¹å™¨
 	 * @param container
 	 */
 	public static void put(DefaultMessageListenerContainer container){
@@ -48,8 +48,8 @@ public class MessageListenerCache {
 	}
 	
 	/**
-	 * ¹Ø±Õ¶ÔÖ¸¶¨Ä¿µÄµØµÄ¼àÌıÆ÷
-	 * @param destination Ä¿µÄµØ
+	 * å…³é—­å¯¹æŒ‡å®šç›®çš„åœ°çš„ç›‘å¬å™¨
+	 * @param destination ç›®çš„åœ°
 	 */
 	public static void stopContainer(Destination destination){
 		if(hasListener(destination)){

@@ -1,9 +1,9 @@
-package me.vurt.nms.core.jms.impl;
+锘縫ackage me.vurt.nms.core.jms.impl;
 
 import org.springframework.jms.listener.adapter.MessageListenerAdapter;
 
 /**
- * 消息监听器适配器，继承自{@link MessageListenerAdapter}，仅为开放其getDelegate()方法
+ * 娑堟伅鐩戝惉鍣ㄩ�傞厤鍣紝缁ф壙鑷獅@link MessageListenerAdapter}锛屼粎涓哄紑鏀惧叾getDelegate()鏂规硶
  * 
  * @author yanyl
  * 

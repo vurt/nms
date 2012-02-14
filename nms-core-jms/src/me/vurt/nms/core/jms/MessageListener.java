@@ -1,4 +1,4 @@
-package me.vurt.nms.core.jms;
+ï»¿package me.vurt.nms.core.jms;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -21,7 +21,7 @@ public class MessageListener {
 	private static int counter = 0;
 
 	/**
-	 * ¼àÌıÆ÷±àºÅ
+	 * ç›‘å¬å™¨ç¼–å·
 	 */
 	private int index = 0;
 
@@ -31,7 +31,7 @@ public class MessageListener {
 	}
 
 	/**
-	 * ¼àÌıÆ÷ĞÂ½¨¸öÊı¼ÆÊıÆ÷
+	 * ç›‘å¬å™¨æ–°å»ºä¸ªæ•°è®¡æ•°å™¨
 	 */
 	private synchronized void addCounter() {
 		counter++;
@@ -40,33 +40,33 @@ public class MessageListener {
 	private Destination destination = null;
 
 	/**
-	 * ÉèÖÃ¼àÌıµÄÄ¿µÄµØ£¬½ö¹©¶ÁÈ¡£¬ÊÖ¶¯µ÷ÓÃ²¢²»»áĞŞ¸Ä¼àÌı¶ÔÏó
+	 * è®¾ç½®ç›‘å¬çš„ç›®çš„åœ°ï¼Œä»…ä¾›è¯»å–ï¼Œæ‰‹åŠ¨è°ƒç”¨å¹¶ä¸ä¼šä¿®æ”¹ç›‘å¬å¯¹è±¡
 	 * 
 	 * @param destination
 	 */
 	public void setDestination(Destination destination) {
 		if (this.destination != null) {
-			LOGGER.error("²»Ö§³ÖĞŞ¸Ä¼àÌıÄ¿±ê");
+			LOGGER.error("ä¸æ”¯æŒä¿®æ”¹ç›‘å¬ç›®æ ‡");
 		} else {
 			this.destination = destination;
-			LOGGER.info(index + " - ¿ªÊ¼¼àÌı" + destination.toString());
+			LOGGER.info(index + " - å¼€å§‹ç›‘å¬" + destination.toString());
 		}
 	}
 
 	/**
-	 * ÏûÏ¢´¦ÀíÆ÷Map£¬KeyÊÇ´¦ÀíÆ÷id£¬ValueÊÇ´¦ÀíÆ÷ÊµÀı
+	 * æ¶ˆæ¯å¤„ç†å™¨Mapï¼ŒKeyæ˜¯å¤„ç†å™¨idï¼ŒValueæ˜¯å¤„ç†å™¨å®ä¾‹
 	 */
 	private Map<String, MessageHandler> handlers = new LinkedHashMap<String, MessageHandler>();
 	
 	/**
-	 * ÏûÏ¢´¦Àí·½·¨µÄ·½·¨Ãû
+	 * æ¶ˆæ¯å¤„ç†æ–¹æ³•çš„æ–¹æ³•å
 	 */
 	public static final String MESSAGE_HANDLE_MOTHED_NAME="messageReceived";
 
 	public void messageReceived(Object msg) {
 		LOGGER.debug("Received one msg:" + msg.toString());
 		if (handlers.size() == 0) {
-			LOGGER.warn("Ã»ÓĞÉèÖÃÈÎºÎ´¦ÀíÆ÷");
+			LOGGER.warn("æ²¡æœ‰è®¾ç½®ä»»ä½•å¤„ç†å™¨");
 		}
 		for (MessageHandler handler : handlers.values()) {
 			handler.handle(msg);
@@ -74,7 +74,7 @@ public class MessageListener {
 	}
 
 	/**
-	 * Ìí¼Ó´¦ÀíÆ÷
+	 * æ·»åŠ å¤„ç†å™¨
 	 * 
 	 * @param handler
 	 */
@@ -83,10 +83,10 @@ public class MessageListener {
 	}
 
 	/**
-	 * É¾³ı´¦ÀíÆ÷
+	 * åˆ é™¤å¤„ç†å™¨
 	 * 
 	 * @param id
-	 *            ´¦ÀíÆ÷id
+	 *            å¤„ç†å™¨id
 	 */
 	public void removeHandler(String id) {
 		if (handlers.containsKey(id)) {
@@ -95,10 +95,10 @@ public class MessageListener {
 	}
 
 	/**
-	 * ¹Ø±Õ¼àÌıÆ÷
+	 * å…³é—­ç›‘å¬å™¨
 	 */
 	public void stop() {
 		MessageListenerCache.stopContainer(destination);
-		LOGGER.info(index + " - ÒÑÍ£Ö¹¼àÌı:" + destination.toString());
+		LOGGER.info(index + " - å·²åœæ­¢ç›‘å¬:" + destination.toString());
 	}
 }

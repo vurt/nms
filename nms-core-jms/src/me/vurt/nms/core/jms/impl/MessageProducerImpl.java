@@ -1,4 +1,4 @@
-package me.vurt.nms.core.jms.impl;
+ï»¿package me.vurt.nms.core.jms.impl;
 
 import javax.jms.Destination;
 
@@ -8,9 +8,9 @@ import me.vurt.nms.core.jms.MessageProducer;
 import org.springframework.jms.core.JmsTemplate;
 
 /**
- * ÏûÏ¢Éú²úÕß
+ * æ¶ˆæ¯ç”Ÿäº§è€…
  * <p>
- * ²»ÒªÖ±½ÓĞÂ½¨£¬×îºÃÍ¨¹ı{@link JMSFactory}´´½¨£¬»ò´ÓSpringÖĞ´´½¨£¬Ä¬ÈÏÅäÖÃÎÄ¼şÂ·¾¶conf/spring-jms.xml£¬Ä¬ÈÏbean name: producer
+ * ä¸è¦ç›´æ¥æ–°å»ºï¼Œæœ€å¥½é€šè¿‡{@link JMSFactory}åˆ›å»ºï¼Œæˆ–ä»Springä¸­åˆ›å»ºï¼Œé»˜è®¤é…ç½®æ–‡ä»¶è·¯å¾„conf/spring-jms.xmlï¼Œé»˜è®¤bean name: producer
  * </p>
  * 
  * @author yanyl
@@ -21,7 +21,7 @@ public class MessageProducerImpl implements MessageProducer{
 	private JmsTemplate jmsTemplate;
 
 	/**
-	 * ·¢ËÍÏûÏ¢ÖÁÄ¬ÈÏ{@link Destination Ä¿µÄµØ}
+	 * å‘é€æ¶ˆæ¯è‡³é»˜è®¤{@link Destination ç›®çš„åœ°}
 	 * @param message
 	 */
 	public void send(Object message) {

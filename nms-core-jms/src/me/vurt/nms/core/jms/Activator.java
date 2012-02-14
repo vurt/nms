@@ -1,13 +1,9 @@
-package me.vurt.nms.core.jms;
-
-import me.vurt.nms.core.jms.test.ProducerTest;
+﻿package me.vurt.nms.core.jms;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationContext;
 
 public class Activator implements BundleActivator {
 	private static final Logger LOGGER = LoggerFactory

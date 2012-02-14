@@ -1,7 +1,7 @@
-package me.vurt.nms.core.jms.exception;
+ï»¿package me.vurt.nms.core.jms.exception;
 
 /**
- * Spring JMSÅäÖÃÎŞĞ§µÄÒì³£
+ * Spring JMSé…ç½®æ— æ•ˆçš„å¼‚å¸¸
  * 
  * @author yanyl
  * 

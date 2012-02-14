@@ -1,9 +1,9 @@
-package me.vurt.nms.core.jms.util;
+ï»¿package me.vurt.nms.core.jms.util;
 
 import javax.jms.Destination;
 
 /**
- * ¿ÕÄ¿µÄµØ
+ * ç©ºç›®çš„åœ°
  * @author yanyl
  *
  */

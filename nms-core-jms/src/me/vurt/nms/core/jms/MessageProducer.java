@@ -1,4 +1,4 @@
-package me.vurt.nms.core.jms;
+ï»¿package me.vurt.nms.core.jms;
 
 import javax.jms.Destination;
 
@@ -8,16 +8,16 @@ import javax.jms.Destination;
  */
 public interface MessageProducer {
 	/**
-	 * ·¢ËÍÏûÏ¢ÖÁÄ¬ÈÏ{@link Destination Ä¿µÄµØ}
+	 * å‘é€æ¶ˆæ¯è‡³é»˜è®¤{@link Destination ç›®çš„åœ°}
 	 * 
-	 * @param message ÏûÏ¢ÄÚÈİ
+	 * @param message æ¶ˆæ¯å†…å®¹
 	 */
 	void send(Object message);
 
 	/**
-	 * ·¢ËÍÏûÏ¢
-	 * @param destination Ä¿µÄµØ
-	 * @param message ÏûÏ¢ÄÚÈİ
+	 * å‘é€æ¶ˆæ¯
+	 * @param destination ç›®çš„åœ°
+	 * @param message æ¶ˆæ¯å†…å®¹
 	 */
 	void send(Destination destination, Object message);
 }

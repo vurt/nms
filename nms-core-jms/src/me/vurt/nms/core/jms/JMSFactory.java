@@ -1,4 +1,4 @@
-package me.vurt.nms.core.jms;
+ï»¿package me.vurt.nms.core.jms;
 
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
@@ -17,7 +17,7 @@ import org.springframework.jms.listener.DefaultMessageListenerContainer;
 import org.springframework.util.Assert;
 
 /**
- * NMS JMS¹¤¾ß¹¤³§
+ * NMS JMSå·¥å…·å·¥å‚
  * 
  * @author yanyl
  * 
@@ -28,20 +28,20 @@ public class JMSFactory {
 //					.getAbsolutePath());
 
 	/**
-	 * ÏûÏ¢Éú²úÕßbeanÃû³Æ
+	 * æ¶ˆæ¯ç”Ÿäº§è€…beanåç§°
 	 */
 	public static final String PRODUCER_BEAN_NAME = "producer";
 	/**
-	 * ÏûÏ¢¼àÌıÆ÷beanÃû³Æ
+	 * æ¶ˆæ¯ç›‘å¬å™¨beanåç§°
 	 */
 	public static final String LISTENER_CONTAINER_BEAN_NAME = "listenerContainer";
 	/**
-	 * Á¬½Ó¹¤³ÌbeanÃû³Æ
+	 * è¿æ¥å·¥ç¨‹beanåç§°
 	 */
 	public static final String CONNECTION_FACTORY_BEAN_NAME = "connectionFactory";
 
 //	/**
-//	 * ĞÂ½¨ÏûÏ¢Éú²úÕßÊµÀı
+//	 * æ–°å»ºæ¶ˆæ¯ç”Ÿäº§è€…å®ä¾‹
 //	 * 
 //	 * @return
 //	 */
@@ -49,17 +49,17 @@ public class JMSFactory {
 //		MessageProducerImpl producer = (MessageProducerImpl) context
 //				.getBean("producer");
 //		if (producer == null)
-//			throw new InvalidJMSConfigException("jms producerÅäÖÃ´íÎó");
+//			throw new InvalidJMSConfigException("jms produceré…ç½®é”™è¯¯");
 //		return producer;
 //	}
 
 //	/**
-//	 * »ñÈ¡ÏûÏ¢¼àÌıÆ÷£¬Ò»¸öĞéÄâ»úÖĞÃ¿¸öÄ¿µÄµØÖ»ÓĞÒ»¸öMessageListener£¬¼´Èç¹ûÄ¿µÄµØ»¹Ã»ÓĞ±ğµÄ¼àÌıÆ÷¼àÌı£¬ÔòĞÂ½¨Ö®£¬Èç¹ûÓĞ£¬ÔòÖ±½Ó·µ»ØÒÑÓĞµÄ
-//	 * ¡£
+//	 * è·å–æ¶ˆæ¯ç›‘å¬å™¨ï¼Œä¸€ä¸ªè™šæ‹Ÿæœºä¸­æ¯ä¸ªç›®çš„åœ°åªæœ‰ä¸€ä¸ªMessageListenerï¼Œå³å¦‚æœç›®çš„åœ°è¿˜æ²¡æœ‰åˆ«çš„ç›‘å¬å™¨ç›‘å¬ï¼Œåˆ™æ–°å»ºä¹‹ï¼Œå¦‚æœæœ‰ï¼Œåˆ™ç›´æ¥è¿”å›å·²æœ‰çš„
+//	 * ã€‚
 //	 * 
 //	 * @param destination
-//	 *            Òª¼àÌıµÄÄ¿µÄµØ£¬Èç¹ûÎªnullÔòÊÇ¼àÌıspring-jms.xmlÖĞ¶¨ÒåµÄdefaultDestination
-//	 * @return ¼àÌıÌØ¶¨DestinationµÄÏûÏ¢¼àÌıÆ÷
+//	 *            è¦ç›‘å¬çš„ç›®çš„åœ°ï¼Œå¦‚æœä¸ºnullåˆ™æ˜¯ç›‘å¬spring-jms.xmlä¸­å®šä¹‰çš„defaultDestination
+//	 * @return ç›‘å¬ç‰¹å®šDestinationçš„æ¶ˆæ¯ç›‘å¬å™¨
 //	 */
 //	public static MessageListener getMessageListener(Destination destination) {
 //		if (destination == null) {
@@ -86,7 +86,7 @@ public class JMSFactory {
 
 //	public static DefaultMessageListenerContainer createListenerContainer(
 //			Destination destination) {
-//		Assert.notNull(destination, "destination²»ÔÊĞíÎª¿Õ");
+//		Assert.notNull(destination, "destinationä¸å…è®¸ä¸ºç©º");
 //		DefaultMessageListenerContainer listenerContainer = new DefaultMessageListenerContainer();
 //		listenerContainer.setConnectionFactory((ConnectionFactory) context
 //				.getBean(CONNECTION_FACTORY_BEAN_NAME));

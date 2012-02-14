@@ -1,4 +1,4 @@
-package me.vurt.nms.core.jms.test;
+ï»¿package me.vurt.nms.core.jms.test;
 
 import me.vurt.nms.core.jms.JMSFactory;
 
@@ -15,7 +15,7 @@ public class ProducerTest {
 
 	public static void main(String[] args) {
 		// JMSFactory.getMessageListener(null);
-//		 JMSFactory.createProducer().send("²âÊÔĞÅÏ¢");
+//		 JMSFactory.createProducer().send("æµ‹è¯•ä¿¡æ¯");
 	}
 
 }

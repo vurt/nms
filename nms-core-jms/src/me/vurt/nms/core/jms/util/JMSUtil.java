@@ -1,4 +1,4 @@
-package me.vurt.nms.core.jms.util;
+ï»¿package me.vurt.nms.core.jms.util;
 
 import me.vurt.nms.core.jms.MessageListener;
 import me.vurt.nms.core.jms.impl.MessageListenerAdapter2;
@@ -21,7 +21,7 @@ public class JMSUtil {
 			return (MessageListener) ((MessageListenerAdapter2) temp)
 					.getDelegate();
 		} else {
-			LOGGER.error("²»Ö§³ÖµÄ¼àÌıÆ÷ÀàĞÍ");
+			LOGGER.error("ä¸æ”¯æŒçš„ç›‘å¬å™¨ç±»å‹");
 			return null;
 		}
 	}
