@@ -23,9 +23,9 @@ import org.springframework.util.Assert;
  * 
  */
 public class JMSFactory {
-	private static final ApplicationContext context = new FileSystemXmlApplicationContext(
-			GlobalConfigFileReader.getConfigFile("spring-jms.xml")
-					.getAbsolutePath());
+//	private static final ApplicationContext context = new FileSystemXmlApplicationContext(
+//			GlobalConfigFileReader.getConfigFile("spring-jms.xml")
+//					.getAbsolutePath());
 
 	/**
 	 * 消息生产者bean名称
@@ -40,63 +40,63 @@ public class JMSFactory {
 	 */
 	public static final String CONNECTION_FACTORY_BEAN_NAME = "connectionFactory";
 
-	/**
-	 * 新建消息生产者实例
-	 * 
-	 * @return
-	 */
-	public static MessageProducerImpl createProducer() {
-		MessageProducerImpl producer = (MessageProducerImpl) context
-				.getBean("producer");
-		if (producer == null)
-			throw new InvalidJMSConfigException("jms producer配置错误");
-		return producer;
-	}
+//	/**
+//	 * 新建消息生产者实例
+//	 * 
+//	 * @return
+//	 */
+//	public static MessageProducerImpl createProducer() {
+//		MessageProducerImpl producer = (MessageProducerImpl) context
+//				.getBean("producer");
+//		if (producer == null)
+//			throw new InvalidJMSConfigException("jms producer配置错误");
+//		return producer;
+//	}
 
-	/**
-	 * 获取消息监听器，一个虚拟机中每个目的地只有一个MessageListener，即如果目的地还没有别的监听器监听，则新建之，如果有，则直接返回已有的
-	 * 。
-	 * 
-	 * @param destination
-	 *            要监听的目的地，如果为null则是监听spring-jms.xml中定义的defaultDestination
-	 * @return 监听特定Destination的消息监听器
-	 */
-	public static MessageListener getMessageListener(Destination destination) {
-		if (destination == null) {
-			destination = EmptyDestination.INSTANCE;
-		}
-		if (MessageListenerCache.hasListener(destination)) {
-			return MessageListenerCache.getCachedMessageListener(destination);
-		} else {
-			if (EmptyDestination.INSTANCE.equals(destination)) {
-				destination = (Destination) context
-						.getBean("defaultDestination");
-			}
+//	/**
+//	 * 获取消息监听器，一个虚拟机中每个目的地只有一个MessageListener，即如果目的地还没有别的监听器监听，则新建之，如果有，则直接返回已有的
+//	 * 。
+//	 * 
+//	 * @param destination
+//	 *            要监听的目的地，如果为null则是监听spring-jms.xml中定义的defaultDestination
+//	 * @return 监听特定Destination的消息监听器
+//	 */
+//	public static MessageListener getMessageListener(Destination destination) {
+//		if (destination == null) {
+//			destination = EmptyDestination.INSTANCE;
+//		}
+//		if (MessageListenerCache.hasListener(destination)) {
+//			return MessageListenerCache.getCachedMessageListener(destination);
+//		} else {
+//			if (EmptyDestination.INSTANCE.equals(destination)) {
+//				destination = (Destination) context
+//						.getBean("defaultDestination");
+//			}
+//
+//			DefaultMessageListenerContainer listenerContainer = createListenerContainer(destination);
+//
+//			MessageListener listener = JMSUtil
+//					.getInnerListener(listenerContainer);
+//
+//			MessageListenerCache.put(listenerContainer);
+//
+//			return listener;
+//		}
+//	}
 
-			DefaultMessageListenerContainer listenerContainer = createListenerContainer(destination);
-
-			MessageListener listener = JMSUtil
-					.getInnerListener(listenerContainer);
-
-			MessageListenerCache.put(listenerContainer);
-
-			return listener;
-		}
-	}
-
-	public static DefaultMessageListenerContainer createListenerContainer(
-			Destination destination) {
-		Assert.notNull(destination, "destination不允许为空");
-		DefaultMessageListenerContainer listenerContainer = new DefaultMessageListenerContainer();
-		listenerContainer.setConnectionFactory((ConnectionFactory) context
-				.getBean(CONNECTION_FACTORY_BEAN_NAME));
-		listenerContainer.setDestination(destination);
-
-		MessageListenerAdapter2 adapter = new MessageListenerAdapter2(
-				new MessageListener());
-		adapter.setDefaultListenerMethod(MessageListener.MESSAGE_HANDLE_MOTHED_NAME);
-		listenerContainer.setMessageListener(adapter);
-
-		return listenerContainer;
-	}
+//	public static DefaultMessageListenerContainer createListenerContainer(
+//			Destination destination) {
+//		Assert.notNull(destination, "destination不允许为空");
+//		DefaultMessageListenerContainer listenerContainer = new DefaultMessageListenerContainer();
+//		listenerContainer.setConnectionFactory((ConnectionFactory) context
+//				.getBean(CONNECTION_FACTORY_BEAN_NAME));
+//		listenerContainer.setDestination(destination);
+//
+//		MessageListenerAdapter2 adapter = new MessageListenerAdapter2(
+//				new MessageListener());
+//		adapter.setDefaultListenerMethod(MessageListener.MESSAGE_HANDLE_MOTHED_NAME);
+//		listenerContainer.setMessageListener(adapter);
+//
+//		return listenerContainer;
+//	}
 }

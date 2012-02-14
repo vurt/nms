@@ -15,7 +15,7 @@ public class ProducerTest {
 
 	public static void main(String[] args) {
 		// JMSFactory.getMessageListener(null);
-		 JMSFactory.createProducer().send("测试信息");
+//		 JMSFactory.createProducer().send("测试信息");
 	}
 
 }

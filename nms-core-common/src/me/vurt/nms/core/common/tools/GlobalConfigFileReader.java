@@ -10,15 +10,16 @@ import org.slf4j.LoggerFactory;
  * 
  */
 public class GlobalConfigFileReader {
-	public static final Logger LOGGER = LoggerFactory
-			.getLogger(GlobalConfigFileReader.class);
-
 	/**
 	 * 全局配置文件的文件夹名称
 	 */
 	public static final String CONFIG_DIRECTORY_NAME = "conf";
 
 	private static File CONFIG_DIRECTORY = null;
+	
+	static{
+		init();
+	}
 
 	public static void init() {
 		String workingDir = System.getProperty("user.dir");
@@ -26,11 +27,11 @@ public class GlobalConfigFileReader {
 
 		CONFIG_DIRECTORY = new File(configDir);
 		if (!(CONFIG_DIRECTORY.exists() && CONFIG_DIRECTORY.isDirectory())) {
-			LOGGER.error("没有找到全局配置文件目录，当期望的全局配置文件目录路径:"
+			System.err.println("没有找到全局配置文件目录，当期望的全局配置文件目录路径:"
 					+ CONFIG_DIRECTORY.getAbsolutePath());
 			CONFIG_DIRECTORY = null;
 		} else {
-			LOGGER.info("全局配置文件目录初始化成功");
+			System.out.println("全局配置文件目录初始化成功");
 		}
 	}
 
@@ -44,7 +45,6 @@ public class GlobalConfigFileReader {
 	public static File getConfigFile(String path) {
 		File file = new File(CONFIG_DIRECTORY, path);
 		if (file.exists() && file.isFile()) {
-			LOGGER.debug("找到了配置文件:" + file.getAbsolutePath());
 			return file;
 		}
 		return null;

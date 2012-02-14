@@ -17,7 +17,9 @@ public class GlobalConfigResouce extends FileSystemResource {
 
 	/**
 	 * 创建NMS配置文件资源
-	 * @param path 全局配置文件的相对路径
+	 * 
+	 * @param path
+	 *            全局配置文件的相对路径
 	 */
 	public GlobalConfigResouce(String path) {
 		super(getRealPath(path));
@@ -25,7 +27,9 @@ public class GlobalConfigResouce extends FileSystemResource {
 
 	/**
 	 * 获取真实的NMS配置文件地址
-	 * @param path 全局配置文件的相对路径
+	 * 
+	 * @param path
+	 *            全局配置文件的相对路径
 	 * @return 配置文件的绝对路径
 	 */
 	private static String getRealPath(String path) {
@@ -33,7 +37,12 @@ public class GlobalConfigResouce extends FileSystemResource {
 		if (file.exists()) {
 			return path;
 		} else {
-			return GlobalConfigFileReader.getConfigFile(path).getAbsolutePath();
+			File realFile = GlobalConfigFileReader.getConfigFile(path);
+			if (realFile != null && realFile.exists() && realFile.isFile()) {
+				return realFile.getAbsolutePath();
+			}
+			// 如果没找到，则返回原路径
+			return path;
 		}
 	}
 
