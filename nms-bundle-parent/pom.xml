@@ -23,7 +23,7 @@
 						<Embed-Dependency>*;scope=compile|runtime;inline=false</Embed-Dependency>
 						<Embed-Directory>target/dependency</Embed-Directory>
 						<Embed-StripGroup>true</Embed-StripGroup>
-						<_include>src/main/resources/META-INF/MANIFEST.MF</_include>
+						<_include>META-INF/MANIFEST.MF</_include>
 					</instructions>
 				</configuration>
 			</plugin>

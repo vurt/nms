@@ -4,12 +4,6 @@
 	<artifactId>nms-core</artifactId>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.apache.felix</groupId>
-			<artifactId>org.apache.felix.shell</artifactId>
-			<version>1.4.2</version>
-			<type>jar</type>
-		</dependency>
 
 		<dependency>
 			<groupId>org.apache.felix</groupId>
