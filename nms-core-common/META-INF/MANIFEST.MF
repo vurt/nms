@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Node manage system common tools
+Bundle-SymbolicName: nms-core-common
+Bundle-Version: 1.0.0
+Bundle-Activator: me.vurt.nms.core.common.Activator
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ClassPath: .,
+ lib/commons-lang-2.5.jar
+Export-Package: me.vurt.nms.core.common.io,
+ me.vurt.nms.core.common.tools;uses:="org.slf4j",
+ org.apache.commons.lang
+Bundle-ActivationPolicy: lazy
+Import-Package: org.apache.log4j;version="1.2.15",
+ org.osgi.framework;version="1.6.0",
+ org.slf4j;version="1.5.6",
+ org.springframework.beans.factory.config;version="2.5.6.SEC01",
+ org.springframework.beans.factory.support;version="2.5.6.SEC01",
+ org.springframework.beans.factory.xml;version="2.5.6.SEC01",
+ org.springframework.core.io;version="2.5.6.SEC01",
+ org.springframework.util.xml;version="2.5.6.SEC01"
