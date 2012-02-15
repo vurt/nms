@@ -1,17 +1,49 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:jms="http://www.springframework.org/schema/jms"
-	xmlns:osgi="http://www.springframework.org/schema/osgi"
+	xmlns:jms="http://www.springframework.org/schema/jms" xmlns:osgi="http://www.springframework.org/schema/osgi"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
             http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
             http://www.springframework.org/schema/context
             http://www.springframework.org/schema/context/spring-context-2.5.xsd
-            http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms-2.5.xsd">
-            
-    <!-- 负责发送心跳信息的jmsTemplate -->
+            http://www.springframework.org/schema/osgi
+			http://www.springframework.org/schema/osgi/spring-osgi.xsd
+            http://www.springframework.org/schema/jms 
+            http://www.springframework.org/schema/jms/spring-jms-2.5.xsd">
+	<!-- 负责发送心跳信息的jmsTemplate -->
 	<bean id="heartBeatJmsTemplate" class="org.springframework.jms.core.JmsTemplate">
 		<property name="connectionFactory" ref="jmsFactory" />
 		<property name="defaultDestination" ref="heartBeatQueue" />
 	</bean>
+
+	<!-- 实现心跳的工作类 -->
+	<bean id="heartBeatJob" class="me.vurt.nms.core.node.client.HeartBeatJob">
+		<constructor-arg ref="heartBeatJmsTemplate" />
+	</bean>
+
+	<!-- 心跳任务触发器 -->
+	<bean id="heartBeatTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="jobDetail" >
+			<bean id="heartBeatJobBean" 	class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="heartBeatJob" />
+				<property name="targetMethod" value="doHeartBeat" />
+			</bean>
+		</property>
+		<!-- 插件的applicationContext初始化完成之后10秒开始执行第一次心跳 -->
+		<property name="startDelay" value="10000" />
+		<!-- 心跳间隔在全局配置文件中设置 -->
+		<property name="repeatInterval" value="${client.heartBeat.repeatInterval}" />
+	</bean>
+
+	<bean id="startQuertz" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="heartBeatTrigger" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="testExtender" class="me.vurt.nms.core.node.test.HeartBeatExtenderTest"></bean>
+	
+	<osgi:service ref="testExtender" interface="me.vurt.nms.core.node.data.HeartBeatExtender"></osgi:service>
 </beans>

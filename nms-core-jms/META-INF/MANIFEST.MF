@@ -3,9 +3,14 @@ Bundle-ManifestVersion: 2
 Bundle-Name: nms-core-jms
 Bundle-SymbolicName: nms-core-jms
 Bundle-Version: 1.0.0
-Bundle-Activator: me.vurt.nms.core.jms.Activator
+Bundle-Activator: me.vurt.nms.core.Activator
 Import-Package: javax.jms;version="1.1.0",
+ me.vurt.nms.core.common.io,
+ me.vurt.nms.core.common.properties,
+ me.vurt.nms.core.common.tools,
  org.osgi.framework;version="1.6.0",
+ org.quartz;version="1.6.2",
+ org.quartz.simpl;version="1.6.2",
  org.slf4j;version="1.5.6",
  org.springframework.beans.factory;version="2.5.6.SEC01",
  org.springframework.beans.factory.config;version="2.5.6.SEC01",
@@ -15,6 +20,7 @@ Import-Package: javax.jms;version="1.1.0",
  org.springframework.jms.core;version="2.5.6.SEC01",
  org.springframework.jms.listener;version="2.5.6.SEC01",
  org.springframework.jms.listener.adapter;version="2.5.6.SEC01",
+ org.springframework.scheduling.quartz;version="2.5.6.SEC01",
  org.springframework.transaction;version="2.5.6.SEC01",
  org.springframework.util;version="2.5.6.SEC01"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
@@ -33,5 +39,6 @@ Bundle-ClassPath: lib/activemq-protobuf-1.1.jar,
  lib/kahadb-5.5.1.jar,
  lib/logkit-1.0.1.jar,
  lib/geronimo-j2ee-management_1.1_spec-1.0.1.jar
-Require-Bundle: nms-core-common;bundle-version="1.0.0"
-Export-Package: me.vurt.nms.core.jms.impl
+Export-Package: me.vurt.nms.core.jms.impl,
+ me.vurt.nms.core.node.data,
+ me.vurt.nms.core.node.test

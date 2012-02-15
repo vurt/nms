@@ -8,6 +8,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ClassPath: .,
  lib/commons-lang-2.5.jar
 Export-Package: me.vurt.nms.core.common.io,
+ me.vurt.nms.core.common.properties,
  me.vurt.nms.core.common.tools;uses:="org.slf4j",
  org.apache.commons.lang
 Bundle-ActivationPolicy: lazy
