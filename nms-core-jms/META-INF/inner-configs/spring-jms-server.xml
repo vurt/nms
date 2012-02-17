@@ -10,6 +10,11 @@
 			http://www.springframework.org/schema/osgi/spring-osgi.xsd
             http://www.springframework.org/schema/jms 
             http://www.springframework.org/schema/jms/spring-jms-2.5.xsd">
+            
+     <!-- 插件主要处理逻辑的入口 -->
+    <bean id="luncher" class="me.vurt.nms.core.node.server.ServerLuncher" />
+	<osgi:service ref="luncher"
+		interface="org.springframework.osgi.context.event.OsgiBundleApplicationContextListener"></osgi:service>
 	
     <!-- 负责发送广播的jmsTemplate -->
 	<bean id="nmsTopicJmsTemplate" class="org.springframework.jms.core.JmsTemplate">
@@ -27,6 +32,7 @@
 
 	<!-- 心跳监听器 -->
 	<bean id="heartBeatListener" class="me.vurt.nms.core.jms.impl.MessageListenerAdapter2">
+		<!-- 初始化时会创建一个新的MessageListener -->
 		<constructor-arg ref="messageListener" />
 		<property name="defaultListenerMethod" value="messageReceived" />
 		<!-- 心跳不需要响应 -->
@@ -42,6 +48,7 @@
 	
 	<!-- 注册监听器 -->
 	<bean id="registrationListener" class="me.vurt.nms.core.jms.impl.MessageListenerAdapter2">
+		<!-- 初始化时会创建一个新的MessageListener -->
 		<constructor-arg ref="messageListener" />
 		<property name="defaultListenerMethod" value="messageReceived" />
 		<property name="defaultResponseDestination" ref="registrationResponseQueue" />

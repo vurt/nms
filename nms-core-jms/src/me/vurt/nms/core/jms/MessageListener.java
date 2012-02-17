@@ -95,10 +95,9 @@ public class MessageListener {
 	}
 
 	/**
-	 * 关闭监听器
+	 * 仅输出一条停止监听的日志，如果要停止监听请直接停止监听器的容器
 	 */
 	public void stop() {
-		MessageListenerCache.stopContainer(destination);
 		LOGGER.info(index + " - 已停止监听:" + destination.toString());
 	}
 }

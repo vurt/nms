@@ -1,12 +1,9 @@
 package me.vurt.nms.core.node.data.impl;
 
-import java.text.DateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import me.vurt.nms.core.node.data.HeartBeat;
-import me.vurt.nms.core.node.util.NodeInfoUtil;
 
 /**
  * 
@@ -43,18 +40,37 @@ public class HeartBeatImpl implements HeartBeat{
 	 */
 	private Map<String, String> data;
 	
-	private static final DateFormat DATE_FORMAT=DateFormat.getDateInstance();
-	
-	public HeartBeatImpl(){
-		data=new HashMap<String, String>();
-		heartBeatTime=DATE_FORMAT.format(new Date());
-		group=NodeInfoUtil.getNodeGroup();
-		id=NodeInfoUtil.getNodeID();
-	}
-	
 	public String getIP(){
 		//TODO:准确的外网IP
 		return ip;
+	}
+
+	/**
+	 * @param ip the ip to set
+	 */
+	public void setIP(String ip) {
+		this.ip = ip;
+	}
+
+	/**
+	 * @param group the group to set
+	 */
+	public void setGroup(String group) {
+		this.group = group;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	/**
+	 * @param heartBeatTime the heartBeatTime to set
+	 */
+	public void setHeartBeatTime(String heartBeatTime) {
+		this.heartBeatTime = heartBeatTime;
 	}
 
 	public String getGroup() {
@@ -78,6 +94,9 @@ public class HeartBeatImpl implements HeartBeat{
 	 * @param otherData 要添加的数据
 	 */
 	public void addExtendData(Map<String, String> otherData){
+		if(data==null){
+			data=new HashMap<String, String>();
+		}
 		data.putAll(otherData);
 	}
 

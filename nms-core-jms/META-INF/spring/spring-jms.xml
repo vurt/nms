@@ -26,6 +26,9 @@
 		</property>
 	</bean>
 
+	<!-- 保存Bundle内部的applicationContext，方便在代码中获取 -->
+	<bean id="applicationContext" class="me.vurt.nms.core.ApplicationContextHolder" />
+
 	<!-- a pooling based JMS provider -->
 	<bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
 		<property name="brokerURL">
@@ -47,7 +50,7 @@
 	<bean id="registrationQueue" class="org.apache.activemq.command.ActiveMQQueue">
 		<constructor-arg value="Registration" />
 	</bean>
-	
+
 	<!-- 注册响应消息队列 -->
 	<bean id="registrationResponseQueue" class="org.apache.activemq.command.ActiveMQQueue">
 		<constructor-arg value="RegistrationResponse" />
@@ -57,7 +60,9 @@
 	<bean id="nmsTopic" class="org.apache.activemq.command.ActiveMQTempTopic">
 		<constructor-arg value="NMSTopic"></constructor-arg>
 	</bean>
-	
+
+	<!-- 消息监听的bean -->
+	<!-- 需要配合org.springframework.jms.listener.DefaultMessageListenerContainer和org.springframework.jms.listener.adapter.MessageListenerAdapter一起使用 -->
 	<bean id="messageListener" class="me.vurt.nms.core.jms.MessageListener"
 		scope="prototype" />
 
