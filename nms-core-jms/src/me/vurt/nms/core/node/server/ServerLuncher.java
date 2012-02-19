@@ -1,20 +1,20 @@
 package me.vurt.nms.core.node.server;
 
+import javax.jms.Destination;
+
 import me.vurt.nms.core.ApplicationContextHolder;
+import me.vurt.nms.core.jms.JMSFactory;
 import me.vurt.nms.core.jms.MessageListener;
-import me.vurt.nms.core.jms.util.JMSUtil;
 import me.vurt.nms.core.node.AbstractNodeLuncher;
 import me.vurt.nms.core.node.util.BeanConstants;
-
-import org.springframework.jms.listener.DefaultMessageListenerContainer;
 
 /**
  * @author yanyl
  * 
  */
 public class ServerLuncher extends AbstractNodeLuncher {
-	private DefaultMessageListenerContainer heartbeatListenerContainer;
 	private MessageListener heartBeatListener;
+	private MessageListener registrationListener;
 
 	/*
 	 * (non-Javadoc)
@@ -23,12 +23,13 @@ public class ServerLuncher extends AbstractNodeLuncher {
 	 */
 	@Override
 	protected void start() {
-		heartbeatListenerContainer=ApplicationContextHolder.getBean(
-				BeanConstants.Server.HEARTBEAT_LISTENER_CONTAINER_BEAN,
-				DefaultMessageListenerContainer.class);
-		heartBeatListener=JMSUtil.getInnerListener(heartbeatListenerContainer);
-		heartBeatListener.setDestination(heartbeatListenerContainer.getDestination());
+		heartBeatListener=JMSFactory.getMessageListener((Destination)ApplicationContextHolder.getBean(BeanConstants.HEART_BEAT_QUEUE_BEAN));
 		heartBeatListener.addMessageHandler(new HeartBeatHandler());
+		heartBeatListener.start();
+		
+		registrationListener=JMSFactory.getMessageListener((Destination)ApplicationContextHolder.getBean(BeanConstants.REGISTRATION_QUEUE_BEAN));
+		registrationListener.addMessageHandler(new RegistrationHandler());
+		registrationListener.start();
 	}
 
 	/*
@@ -38,7 +39,6 @@ public class ServerLuncher extends AbstractNodeLuncher {
 	 */
 	@Override
 	protected void stop() {
-		heartbeatListenerContainer.stop();
 		heartBeatListener.stop();
 	}
 

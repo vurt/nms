@@ -1,11 +1,16 @@
 ﻿package me.vurt.nms.core.jms;
 
+import javax.jms.ConnectionFactory;
+import javax.jms.Destination;
+
 import me.vurt.nms.core.ApplicationContextHolder;
-import me.vurt.nms.core.jms.util.JMSUtil;
+import me.vurt.nms.core.jms.util.MessageListenerCache;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jms.listener.DefaultMessageListenerContainer;
+import org.springframework.jms.listener.adapter.MessageListenerAdapter;
+import org.springframework.util.Assert;
 
 /**
  * NMS JMS工具工厂
@@ -38,33 +43,51 @@ public class JMSFactory {
 	/**
 	 * 获取消息监听器
 	 * 
-	 * @param containerID
-	 *            Spring配置文件中定义的监听容器的bean id
-	 * @return 容器中的消息监听器
+	 * @param destination
+	 *            要监听的目标
+	 * @return 消息监听器，默认新建出来时是未启动状态
 	 */
-	public static MessageListener getMessageListener(String containerID) {
-		DefaultMessageListenerContainer listenerContainer = ApplicationContextHolder
-				.getBean(containerID,
-						DefaultMessageListenerContainer.class);
-
-		MessageListener listener = JMSUtil.getInnerListener(listenerContainer);
+	public static MessageListener getMessageListener(Destination destination) {
+		MessageListener listener = MessageListenerCache
+				.getMessageListener(destination);
+		if (listener == null) {
+			createListenerContainer(destination);
+			return MessageListenerCache.getMessageListener(destination);
+		}
 		return listener;
 	}
 
-	// public static DefaultMessageListenerContainer createListenerContainer(
-	// Destination destination) {
-	// Assert.notNull(destination, "destination不允许为空");
-	// DefaultMessageListenerContainer listenerContainer = new
-	// DefaultMessageListenerContainer();
-	// listenerContainer.setConnectionFactory((ConnectionFactory) context
-	// .getBean(CONNECTION_FACTORY_BEAN_NAME));
-	// listenerContainer.setDestination(destination);
-	//
-	// MessageListenerAdapter2 adapter = new MessageListenerAdapter2(
-	// new MessageListener());
-	// adapter.setDefaultListenerMethod(MessageListener.MESSAGE_HANDLE_MOTHED_NAME);
-	// listenerContainer.setMessageListener(adapter);
-	//
-	// return listenerContainer;
-	// }
+	/**
+	 * 获取Spring中定义的连接工厂
+	 * 
+	 * @return
+	 */
+	private static ConnectionFactory getConnectionFactory() {
+		return (ConnectionFactory) ApplicationContextHolder
+				.getBean(CONNECTION_FACTORY_BEAN_NAME);
+	}
+
+	/**
+	 * 创建监听指定目的地的监听容器，并初始化一个{@link MessageListener 监听器}，将它们根据目标缓存到{@link MessageListenerCache}中去
+	 * 
+	 * @param destination
+	 *            要监听的目标
+	 * @return 监听容器，创建时默认不启动
+	 */
+	public static DefaultMessageListenerContainer createListenerContainer(
+			Destination destination) {
+		Assert.notNull(destination, "destination不允许为空");
+		DefaultMessageListenerContainer listenerContainer = new DefaultMessageListenerContainer();
+		listenerContainer.setConnectionFactory(getConnectionFactory());
+		listenerContainer.setDestination(destination);
+
+		MessageListener listener = new MessageListener();
+		listener.setDestination(destination);
+		MessageListenerAdapter adapter = new MessageListenerAdapter(listener);
+		adapter.setDefaultListenerMethod(MessageListener.MESSAGE_HANDLE_MOTHED_NAME);
+
+		listenerContainer.setMessageListener(adapter);
+		MessageListenerCache.put(listenerContainer, listener);
+		return listenerContainer;
+	}
 }

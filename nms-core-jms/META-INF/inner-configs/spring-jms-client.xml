@@ -43,7 +43,9 @@
 		</property>
 	</bean>
 	
+	<!-- 扩展客户端心跳信息的Demo -->
+	<!-- 	
 	<bean id="testExtender" class="me.vurt.nms.core.node.test.HeartBeatExtenderTest"></bean>
-	
 	<osgi:service ref="testExtender" interface="me.vurt.nms.core.node.data.HeartBeatExtender"></osgi:service>
+	 -->
 </beans>

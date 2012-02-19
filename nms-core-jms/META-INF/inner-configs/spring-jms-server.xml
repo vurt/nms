@@ -31,34 +31,39 @@
 	<osgi:service  ref="topicProducer" interface="me.vurt.nms.core.jms.MessageProducer" />
 
 	<!-- 心跳监听器 -->
+	<!-- 
 	<bean id="heartBeatListener" class="me.vurt.nms.core.jms.impl.MessageListenerAdapter2">
-		<!-- 初始化时会创建一个新的MessageListener -->
 		<constructor-arg ref="messageListener" />
 		<property name="defaultListenerMethod" value="messageReceived" />
-		<!-- 心跳不需要响应 -->
 	</bean>
+	 -->
 	
 	<!-- 心跳监听容器 -->
+	<!-- 
 	<bean id="heartBeatListenerContainer"
 		class="org.springframework.jms.listener.DefaultMessageListenerContainer">
 		<property name="connectionFactory" ref="connectionFactory" />
 		<property name="destination" ref="heartBeatQueue" />
 		<property name="messageListener" ref="heartBeatListener" />
 	</bean>
+	 -->
 	
 	<!-- 注册监听器 -->
+	<!-- 
 	<bean id="registrationListener" class="me.vurt.nms.core.jms.impl.MessageListenerAdapter2">
-		<!-- 初始化时会创建一个新的MessageListener -->
 		<constructor-arg ref="messageListener" />
 		<property name="defaultListenerMethod" value="messageReceived" />
 		<property name="defaultResponseDestination" ref="registrationResponseQueue" />
 	</bean>
+	 -->
 	
 	<!-- 注册监听容器 -->
+	<!-- 
 	<bean id="registrationListenerContainer"
 		class="org.springframework.jms.listener.DefaultMessageListenerContainer">
 		<property name="connectionFactory" ref="connectionFactory" />
 		<property name="destination" ref="registrationQueue" />
 		<property name="messageListener" ref="registrationListener" />
 	</bean>
+	 -->
 </beans>

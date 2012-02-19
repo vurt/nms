@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * 消息监听器的实现类，可以添加具体的处理实例，启动和关闭监听
  * @author yanyl
  * 
  */
@@ -40,7 +41,7 @@ public class MessageListener {
 	private Destination destination = null;
 
 	/**
-	 * 设置监听的目的地，仅供读取，手动调用并不会修改监听对象
+	 * 设置监听的目的地，仅供读取，每个消息监听器只能被设置一次监听目标，重复设置无效
 	 * 
 	 * @param destination
 	 */
@@ -49,7 +50,6 @@ public class MessageListener {
 			LOGGER.error("不支持修改监听目标");
 		} else {
 			this.destination = destination;
-			LOGGER.info(index + " - 开始监听" + destination.toString());
 		}
 	}
 
@@ -93,11 +93,20 @@ public class MessageListener {
 			handlers.remove(id);
 		}
 	}
+	
+	/**
+	 * 启动监听
+	 */
+	public void start(){
+		MessageListenerCache.startContainer(destination);
+		LOGGER.info(index + " - 开始监听" + destination.toString());
+	}
 
 	/**
-	 * 仅输出一条停止监听的日志，如果要停止监听请直接停止监听器的容器
+	 * 停止监听
 	 */
 	public void stop() {
+		MessageListenerCache.stopContainer(destination);
 		LOGGER.info(index + " - 已停止监听:" + destination.toString());
 	}
 }

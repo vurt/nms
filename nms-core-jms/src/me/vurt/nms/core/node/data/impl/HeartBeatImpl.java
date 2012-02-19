@@ -38,7 +38,7 @@ public class HeartBeatImpl implements HeartBeat{
 	/**
 	 * 扩展数据，
 	 */
-	private Map<String, String> data;
+	private Map<String, String> data=new HashMap<String, String>();
 	
 	public String getIP(){
 		//TODO:准确的外网IP
@@ -94,9 +94,6 @@ public class HeartBeatImpl implements HeartBeat{
 	 * @param otherData 要添加的数据
 	 */
 	public void addExtendData(Map<String, String> otherData){
-		if(data==null){
-			data=new HashMap<String, String>();
-		}
 		data.putAll(otherData);
 	}
 
