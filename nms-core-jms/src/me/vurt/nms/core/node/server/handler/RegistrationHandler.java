@@ -1,4 +1,4 @@
-package me.vurt.nms.core.node.server;
+package me.vurt.nms.core.node.server.handler;
 
 import me.vurt.nms.core.jms.MessageHandler;
 

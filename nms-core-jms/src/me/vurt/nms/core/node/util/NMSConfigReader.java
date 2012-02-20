@@ -6,18 +6,32 @@ import me.vurt.nms.core.exception.UnsupportedNodeType;
 import me.vurt.nms.core.node.NodeType;
 
 /**
+ * 全局配置文件读取帮助类
  * @author yanyl
  *
  */
-public class NodeInfoUtil {
-	private static PropertiesManager NodePropertiesManager=new PropertiesManager(GlobalConfigFileReader.getConfigFile("nms-Config.properties").toURI());
+public class NMSConfigReader {
+	private static PropertiesManager configManager=new PropertiesManager(GlobalConfigFileReader.getConfigFile(NodeConstants.CONFIG_FILE_PATH).toURI());
+	
+	/**
+	 * 获取系统的属性文件管理器
+	 * @return
+	 */
+	public static PropertiesManager getPropertiesManager(){
+		return configManager;
+	}
+	
+	public static boolean debugMode(){
+		String debug=configManager.read(NodeConstants.PROPERTY_DEBUG_MODE);
+		return Boolean.valueOf(debug);
+	}
 	
 	/**
 	 * 获取当前节点所属的分组名
 	 * @return
 	 */
 	public static String getNodeGroup(){
-		return NodePropertiesManager.read("nms.node.group");
+		return configManager.read(NodeConstants.PROPERTY_NODE_GROUP);
 	}
 	
 	/**
@@ -25,7 +39,7 @@ public class NodeInfoUtil {
 	 * @return
 	 */
 	public static String getNodeID(){
-		return NodePropertiesManager.read("nms.node.id");
+		return configManager.read(NodeConstants.PROPERTY_NODE_ID);
 	}
 	
 	/**
@@ -33,7 +47,7 @@ public class NodeInfoUtil {
 	 * @return
 	 */
 	public static NodeType getNodeType(){
-		String type=System.getProperty(NodeConstants.NODE_TYPE_PROPERTY);
+		String type=System.getProperty(NodeConstants.SYS_PROPERTY_NODE_TYPE);
 		if(NodeConstants.NODE_TYPE_SERVER.equals(type)){
 			return NodeType.Sever;
 		}else if(NodeConstants.NODE_TYPE_CLIENT.equals(type)){
