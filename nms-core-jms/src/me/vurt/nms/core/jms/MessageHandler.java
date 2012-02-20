@@ -16,7 +16,8 @@ public interface MessageHandler {
 	String getId();
 	/**
 	 * 处理消息
-	 * @param msg
+	 * @param msg 要处理的消息
+	 * @return 处理消息的响应结果，如果为null则表示不需要响应
 	 */
-	void handle(Object msg);
+	Object handle(Object msg) throws Exception;
 }

@@ -19,5 +19,10 @@ public interface NodeConstants {
 	 * 节点类型，客户端
 	 */
 	String NODE_TYPE_CLIENT="client";
+	
+	/**
+	 * 系统使用的标准日期格式
+	 */
+	String DATE_FORMAT_PATTERN="y-M-d h:m:s";
 			
 }

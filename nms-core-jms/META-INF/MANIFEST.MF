@@ -5,6 +5,9 @@ Bundle-SymbolicName: nms-core-jms
 Bundle-Version: 1.0.0
 Bundle-Activator: me.vurt.nms.core.Activator
 Import-Package: javax.jms;version="1.1.0",
+ javax.naming,
+ javax.net,
+ javax.transaction.xa,
  me.vurt.nms.core.common.io,
  me.vurt.nms.core.common.properties,
  me.vurt.nms.core.common.tools,

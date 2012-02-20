@@ -21,8 +21,9 @@ public class HeartBeatHandler implements MessageHandler {
 	 * @see me.vurt.nms.core.jms.MessageHandler#handle(java.lang.Object)
 	 */
 	@Override
-	public void handle(Object msg) {
+	public Object handle(Object msg) {
 		LOGGER.debug("处理了一条心跳信息:"+msg);
+		return null;
 	}
 
 }

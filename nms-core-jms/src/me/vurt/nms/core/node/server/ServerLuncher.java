@@ -9,6 +9,7 @@ import me.vurt.nms.core.node.AbstractNodeLuncher;
 import me.vurt.nms.core.node.util.BeanConstants;
 
 /**
+ * 服务端启动器
  * @author yanyl
  * 
  */
@@ -23,11 +24,16 @@ public class ServerLuncher extends AbstractNodeLuncher {
 	 */
 	@Override
 	protected void start() {
-		heartBeatListener=JMSFactory.getMessageListener((Destination)ApplicationContextHolder.getBean(BeanConstants.HEART_BEAT_QUEUE_BEAN));
+		heartBeatListener = JMSFactory
+				.getMessageListener((Destination) ApplicationContextHolder
+						.getBean(BeanConstants.HEART_BEAT_QUEUE_BEAN));
 		heartBeatListener.addMessageHandler(new HeartBeatHandler());
 		heartBeatListener.start();
-		
-		registrationListener=JMSFactory.getMessageListener((Destination)ApplicationContextHolder.getBean(BeanConstants.REGISTRATION_QUEUE_BEAN));
+
+		registrationListener = JMSFactory
+				.getMessageListener((Destination) ApplicationContextHolder
+						.getBean(BeanConstants.REGISTRATION_QUEUE_BEAN),(Destination) ApplicationContextHolder
+						.getBean(BeanConstants.REGISTRATION_RESPONSE_QUEUE_BEAN));
 		registrationListener.addMessageHandler(new RegistrationHandler());
 		registrationListener.start();
 	}
@@ -39,7 +45,12 @@ public class ServerLuncher extends AbstractNodeLuncher {
 	 */
 	@Override
 	protected void stop() {
-		heartBeatListener.stop();
+		if (heartBeatListener != null) {
+			heartBeatListener.stop();
+		}
+		if (registrationListener != null) {
+			registrationListener.stop();
+		}
 	}
 
 }

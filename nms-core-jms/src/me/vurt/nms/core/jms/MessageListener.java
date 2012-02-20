@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.jms.Destination;
 
+import me.vurt.nms.core.jms.impl.DefaultReponseMessage;
 import me.vurt.nms.core.jms.util.MessageListenerCache;
 
 import org.slf4j.Logger;
@@ -12,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * 消息监听器的实现类，可以添加具体的处理实例，启动和关闭监听
+ * 
  * @author yanyl
  * 
  */
@@ -57,20 +59,33 @@ public class MessageListener {
 	 * 消息处理器Map，Key是处理器id，Value是处理器实例
 	 */
 	private Map<String, MessageHandler> handlers = new LinkedHashMap<String, MessageHandler>();
-	
+
 	/**
 	 * 消息处理方法的方法名
 	 */
-	public static final String MESSAGE_HANDLE_MOTHED_NAME="messageReceived";
+	public static final String MESSAGE_HANDLE_MOTHED_NAME = "messageReceived";
 
-	public void messageReceived(Object msg) {
+	public Object messageReceived(Object msg) {
 		LOGGER.debug("Received one msg:" + msg.toString());
 		if (handlers.size() == 0) {
 			LOGGER.warn("没有设置任何处理器");
 		}
+		ResponseMessage response = new DefaultReponseMessage();
 		for (MessageHandler handler : handlers.values()) {
-			handler.handle(msg);
+			try {
+				Object result = handler.handle(msg);
+				if (result != null) {
+					response.addResponse(handler.getId(), result);
+				}
+			} catch (Exception e) {
+				LOGGER.error("处理消息时发生异常，handlerID:" + handler.getId(), e);
+				response.addError(handler.getId(), e.getMessage());
+			}
 		}
+		if (!response.isEmpty()) {
+			return response;
+		}
+		return null;
 	}
 
 	/**
@@ -93,11 +108,11 @@ public class MessageListener {
 			handlers.remove(id);
 		}
 	}
-	
+
 	/**
 	 * 启动监听
 	 */
-	public void start(){
+	public void start() {
 		MessageListenerCache.startContainer(destination);
 		LOGGER.info(index + " - 开始监听" + destination.toString());
 	}

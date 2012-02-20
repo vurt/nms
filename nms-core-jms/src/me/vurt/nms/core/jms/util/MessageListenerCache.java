@@ -7,6 +7,8 @@ import javax.jms.Destination;
 
 import me.vurt.nms.core.jms.MessageListener;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jms.listener.DefaultMessageListenerContainer;
 import org.springframework.util.Assert;
 
@@ -16,6 +18,7 @@ import org.springframework.util.Assert;
  * 
  */
 public class MessageListenerCache {
+	private static final Logger LOGGER=LoggerFactory.getLogger(MessageListenerCache.class);
 	/**
 	 * 储存目的地和监听器容器的Map
 	 */
@@ -44,6 +47,7 @@ public class MessageListenerCache {
 	 */
 	public static MessageListener getMessageListener(Destination destination) {
 		if (hasListener(destination)) {
+			LOGGER.debug("从缓存读取"+destination.toString()+"的监听器");
 			return listenerMap.get(destination);
 		}
 		return null;
@@ -59,6 +63,7 @@ public class MessageListenerCache {
 		Assert.notNull(listener,"缓存的监听器不能为空");
 		containerMap.put(container.getDestination(), container);
 		listenerMap.put(container.getDestination(), listener);
+		LOGGER.debug("将目标地址:"+container.getDestination().toString()+"的监听器放入缓存");
 	}
 
 	public static void startContainer(Destination destination) {
