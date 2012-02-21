@@ -2,13 +2,21 @@
 
 import javax.jms.Destination;
 
+import org.springframework.jms.core.JmsTemplate;
+
 /**
  * @author yanyl
  * 
  */
 public interface MessageProducer {
 	/**
-	 * 发送消息至默认{@link Destination 目的地}
+	 * 设置jmsTemplate
+	 * @param jmsTemplate
+	 */
+	void setJmsTemplate(JmsTemplate jmsTemplate);
+	
+	/**
+	 * 发送消息至默认{@link Destination 目的地}，默认目的地在jmsTemplate中指定
 	 * 
 	 * @param message 消息内容
 	 */

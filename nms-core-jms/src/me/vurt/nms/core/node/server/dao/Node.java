@@ -2,12 +2,14 @@ package me.vurt.nms.core.node.server.dao;
 
 import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Name;
+import org.nutz.dao.entity.annotation.Table;
 
 /**
  * 节点数据POJO
  * @author Vurt
  *
  */
+@Table("node")
 public class Node {
 
 	/**

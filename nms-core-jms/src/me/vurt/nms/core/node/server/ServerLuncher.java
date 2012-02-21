@@ -5,16 +5,15 @@ import java.sql.SQLException;
 import javax.jms.Destination;
 
 import me.vurt.nms.core.ApplicationContextHolder;
-import me.vurt.nms.core.common.properties.PropertiesManager;
 import me.vurt.nms.core.jms.JMSFactory;
 import me.vurt.nms.core.jms.MessageListener;
+import me.vurt.nms.core.jms.impl.StaticMessageListener;
 import me.vurt.nms.core.node.AbstractNodeLuncher;
 import me.vurt.nms.core.node.server.handler.HeartBeatHandler;
 import me.vurt.nms.core.node.server.handler.RegistrationHandler;
 import me.vurt.nms.core.node.util.BeanConstants;
 import me.vurt.nms.core.node.util.NMSConfigReader;
 
-import org.apache.commons.dbcp.BasicDataSource;
 import org.h2.tools.Server;
 
 /**
@@ -35,7 +34,7 @@ public class ServerLuncher extends AbstractNodeLuncher {
 	 */
 	@Override
 	protected void start() {
-		if(NMSConfigReader.debugMode()){
+		if (NMSConfigReader.debugMode()) {
 			try {
 				h2Server = Server.createWebServer().start();
 			} catch (SQLException e) {
@@ -45,7 +44,10 @@ public class ServerLuncher extends AbstractNodeLuncher {
 		heartBeatListener = JMSFactory
 				.getMessageListener((Destination) ApplicationContextHolder
 						.getBean(BeanConstants.HEART_BEAT_QUEUE_BEAN));
-		heartBeatListener.addMessageHandler(new HeartBeatHandler());
+		if (heartBeatListener instanceof StaticMessageListener) {
+			((StaticMessageListener) heartBeatListener)
+					.addMessageHandler(new HeartBeatHandler());
+		}
 		heartBeatListener.start();
 
 		registrationListener = JMSFactory
@@ -54,7 +56,10 @@ public class ServerLuncher extends AbstractNodeLuncher {
 								.getBean(BeanConstants.REGISTRATION_QUEUE_BEAN),
 						(Destination) ApplicationContextHolder
 								.getBean(BeanConstants.REGISTRATION_RESPONSE_QUEUE_BEAN));
-		registrationListener.addMessageHandler(new RegistrationHandler());
+		if (registrationListener instanceof StaticMessageListener) {
+			((StaticMessageListener) registrationListener)
+					.addMessageHandler(new RegistrationHandler());
+		}
 		registrationListener.start();
 	}
 
