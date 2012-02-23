@@ -5,7 +5,7 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 
 import me.vurt.nms.core.jms.MessageProducer;
-import me.vurt.nms.core.node.util.NMSConfigReader;
+import me.vurt.nms.core.node.util.NodeInfoReader;
 import me.vurt.nms.core.node.util.NodeConstants;
 
 import org.slf4j.Logger;
@@ -39,6 +39,9 @@ public class MessageProducerImpl implements MessageProducer {
 	 * 发送消息到指定目的地
 	 */
 	public void send(Destination destination, Object message) {
+		if(jmsTemplate==null){
+			LOGGER.error("在发送消息前必须为MessageProducer设置JmsTemplate");
+		}
 		if (destination == null) {
 			jmsTemplate.convertAndSend(message, processor);
 		} else {
@@ -68,11 +71,11 @@ public class MessageProducerImpl implements MessageProducer {
 		@Override
 		public Message postProcessMessage(Message message) throws JMSException {
 			// 只有客户端发送消息前需要添加额外信息
-			if(!NMSConfigReader.isClient()){
+			if(!NodeInfoReader.isClient()){
 				return message;
 			}
-			String group = NMSConfigReader.getNodeGroup();
-			String id = NMSConfigReader.getNodeID();
+			String group = NodeInfoReader.getNodeGroup();
+			String id = NodeInfoReader.getNodeID();
 			message.setStringProperty(NodeConstants.PROPERTY_NODE_GROUP, group);
 			message.setStringProperty(NodeConstants.PROPERTY_NODE_ID, id);
 			LOGGER.debug("向消息头添加属性:"+NodeConstants.PROPERTY_NODE_GROUP+"="+group);

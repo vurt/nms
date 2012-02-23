@@ -65,5 +65,8 @@
 	<!-- 需要配合org.springframework.jms.listener.DefaultMessageListenerContainer和org.springframework.jms.listener.adapter.MessageListenerAdapter一起使用 -->
 	<bean id="messageListener" class="me.vurt.nms.core.jms.MessageListener"
 		scope="prototype" />
+	
+	<!-- 普通消息生产者，初始化后需要自己设置JmsTemplate -->	
+	<bean id="producer" class="me.vurt.nms.core.jms.impl.MessageProducerImpl" scope="prototype"/>
 
 </beans>

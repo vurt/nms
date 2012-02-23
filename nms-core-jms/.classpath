@@ -1,18 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry exported="true" kind="lib" path="lib/commons-dbcp-1.4.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/h2-1.3.164.jar" sourcepath="F:/open-source-project/h2/src/main"/>
-	<classpathentry exported="true" kind="lib" path="lib/nutz-1.b.42.jar" sourcepath="F:/open-source-project/nutz/nutz-1.b.42-sources.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/geronimo-j2ee-management_1.1_spec-1.0.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/aopalliance-1.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/avalon-framework-4.1.3.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/commons-logging-1.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/commons-net-2.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/commons-pool-1.5.4.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/hamcrest-core-1.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jasypt-1.7.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/kahadb-5.5.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/logkit-1.0.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/activemq-pool-5.5.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/commons-dbcp-1.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/activemq-all-5.5.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/h2-1.3.164.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/nutz-1.b.42.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins">
 		<accessrules>
@@ -20,9 +13,5 @@
 		</accessrules>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry exported="true" kind="lib" path="lib/activemq-protobuf-1.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/activeio-core-3.1.2.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/activemq-core-5.5.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/activemq-pool-5.5.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

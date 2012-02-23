@@ -7,6 +7,10 @@ package me.vurt.nms.core.node.util;
  */
 public interface BeanConstants {
 	/**
+	 * 通用消息生产者
+	 */
+	String PRODUCER_BEAN="producer";
+	/**
 	 * 传递心跳的Queue的名称
 	 */
 	String HEART_BEAT_QUEUE_NAME="HeartBeat";
@@ -14,6 +18,11 @@ public interface BeanConstants {
 	 * 传递心跳的Queue的Destination的Bean ID
 	 */
 	String HEART_BEAT_QUEUE_BEAN="heartBeatQueue";
+	
+	/**
+	 * 负责发送注册请求的JmsTemplate
+	 */
+	String REGISTRATION_JMS_TEMPLATE="registrationJmsTemplate";
 	
 	/**
 	 * 注册使用的Queue的名称
@@ -52,7 +61,10 @@ public interface BeanConstants {
 	 *
 	 */
 	interface Client{
-		
+		/**
+		 * 心跳任务启动器
+		 */
+		String HEARTBEAT_SCHEDULER="heartBeatScheduler";
 	}
 	
 	/**

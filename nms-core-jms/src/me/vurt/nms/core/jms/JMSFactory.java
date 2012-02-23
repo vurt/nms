@@ -5,11 +5,11 @@ import javax.jms.Destination;
 
 import me.vurt.nms.core.ApplicationContextHolder;
 import me.vurt.nms.core.jms.exception.InvalidJMSConfigException;
-import me.vurt.nms.core.jms.impl.MessageProducerImpl;
 import me.vurt.nms.core.jms.impl.NMSMessageListenerAdapter;
 import me.vurt.nms.core.jms.impl.StaticMessageListener;
 import me.vurt.nms.core.jms.util.MessageListenerCache;
-import me.vurt.nms.core.node.util.NMSConfigReader;
+import me.vurt.nms.core.node.util.BeanConstants;
+import me.vurt.nms.core.node.util.NodeInfoReader;
 import me.vurt.nms.core.node.util.NodeConstants;
 
 import org.slf4j.Logger;
@@ -19,7 +19,9 @@ import org.springframework.jms.listener.adapter.MessageListenerAdapter;
 import org.springframework.util.Assert;
 
 /**
- * NMS JMS工具工厂
+ * NMS JMS工具工厂<BR>
+ * 如果该工厂的调用者是客户端节点，那么创建出来的所有消息监听器都只接受发送给当前节点的消息，该消息选择器无法修改
+ * (即，消息头中{@link NodeConstants#PROPERTY_NODE_GROUP}和{@link NodeConstants#PROPERTY_NODE_ID}属性值与当前节点匹配)
  * 
  * @author yanyl
  * 
@@ -34,13 +36,13 @@ public class JMSFactory {
 	public static final String CONNECTION_FACTORY_BEAN_NAME = "connectionFactory";
 
 	/**
-	 * 新建消息生产者实例
+	 * 新建消息生产者实例，需要手动设置JmsTemplate后才能使用
 	 * 
 	 * @return
 	 */
 	public static MessageProducer createProducer() {
 		MessageProducer producer = (MessageProducer) ApplicationContextHolder
-				.getBean("producer");
+				.getBean(BeanConstants.PRODUCER_BEAN);
 		if (producer == null)
 			throw new InvalidJMSConfigException("jms producer配置错误");
 		return producer;
@@ -137,6 +139,20 @@ public class JMSFactory {
 		MessageListenerCache.put(listenerContainer, listener);
 		return listenerContainer;
 	}
+	
+	/**
+	 * 构建只接收发送给当前节点消息的选择器的表达式
+	 */
+	public static String getMessageSelector(){
+		String group = NodeInfoReader.getNodeGroup();
+		String id = NodeInfoReader.getNodeID();
+		//TODO:语法不对...
+		String messageSelector ="\""+ NodeConstants.PROPERTY_NODE_GROUP+"\"" + " = "
+				+ group + " AND \"" + NodeConstants.PROPERTY_NODE_ID+"\"" + " = "
+				+ id;
+		LOGGER.debug("当前节点的MessageSelector");
+		return messageSelector;
+	}
 
 	/**
 	 * 初始化监听容器的消息选择器<BR>
@@ -148,13 +164,8 @@ public class JMSFactory {
 	private static void initMessageSelector(
 			DefaultMessageListenerContainer listenerContainer) {
 		// 当前节点的类型是客户端
-		if (NMSConfigReader.isClient()) {
-			String group = NMSConfigReader.getNodeGroup();
-			String id = NMSConfigReader.getNodeID();
-			String messageSelector = NodeConstants.PROPERTY_NODE_GROUP + " = "
-					+ group + " AND " + NodeConstants.PROPERTY_NODE_ID + " = "
-					+ id;
-			listenerContainer.setMessageSelector(messageSelector);
+		if (NodeInfoReader.isClient()) {
+			listenerContainer.setMessageSelector(getMessageSelector());
 		}
 	}
 }

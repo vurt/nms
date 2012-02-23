@@ -10,7 +10,7 @@ import me.vurt.nms.core.node.data.HeartBeat;
 import me.vurt.nms.core.node.data.HeartBeatExtender;
 import me.vurt.nms.core.node.data.impl.HeartBeatImpl;
 import me.vurt.nms.core.node.util.NodeConstants;
-import me.vurt.nms.core.node.util.NMSConfigReader;
+import me.vurt.nms.core.node.util.NodeInfoReader;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;
@@ -29,8 +29,8 @@ public class HeartBeanFactory {
 	 */
 	public static HeartBeat createHeartBeat() {
 		HeartBeatImpl heartBeat = new HeartBeatImpl();
-		heartBeat.setId(NMSConfigReader.getNodeID());
-		heartBeat.setGroup(NMSConfigReader.getNodeGroup());
+		heartBeat.setId(NodeInfoReader.getNodeID());
+		heartBeat.setGroup(NodeInfoReader.getNodeGroup());
 		heartBeat.setHeartBeatTime(DATE_FORMAT.format(new Date()));
 		BundleContext context = Activator.getContext();
 		Collection<ServiceReference<HeartBeatExtender>> refs;

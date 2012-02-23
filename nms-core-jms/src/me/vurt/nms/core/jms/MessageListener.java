@@ -118,6 +118,7 @@ public abstract class MessageListener {
 		if (!response.isEmpty()) {
 			return response;
 		}
+		//TODO:怎么样将响应消息以非持久化的方式发送
 		return null;
 	}
 

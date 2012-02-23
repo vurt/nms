@@ -10,7 +10,7 @@ import me.vurt.nms.core.node.NodeType;
  * @author yanyl
  *
  */
-public class NMSConfigReader {
+public class NodeInfoReader {
 	private static PropertiesManager configManager=new PropertiesManager(GlobalConfigFileReader.getConfigFile(NodeConstants.CONFIG_FILE_PATH).toURI());
 	
 	/**
@@ -20,6 +20,14 @@ public class NMSConfigReader {
 	public static boolean isClient(){
 		String type=System.getProperty(NodeConstants.SYS_PROPERTY_NODE_TYPE);
 		return NodeConstants.NODE_TYPE_CLIENT.equals(type);
+	}
+	
+	/**
+	 * 当前节点是否已注册
+	 * @return
+	 */
+	public static boolean isRegisted(){
+		return false;
 	}
 	
 	/**

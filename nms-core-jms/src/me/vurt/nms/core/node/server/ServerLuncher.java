@@ -12,7 +12,7 @@ import me.vurt.nms.core.node.AbstractNodeLuncher;
 import me.vurt.nms.core.node.server.handler.HeartBeatHandler;
 import me.vurt.nms.core.node.server.handler.RegistrationHandler;
 import me.vurt.nms.core.node.util.BeanConstants;
-import me.vurt.nms.core.node.util.NMSConfigReader;
+import me.vurt.nms.core.node.util.NodeInfoReader;
 
 import org.h2.tools.Server;
 
@@ -34,7 +34,7 @@ public class ServerLuncher extends AbstractNodeLuncher {
 	 */
 	@Override
 	protected void start() {
-		if (NMSConfigReader.debugMode()) {
+		if (NodeInfoReader.debugMode()) {
 			try {
 				h2Server = Server.createWebServer().start();
 			} catch (SQLException e) {

@@ -10,9 +10,23 @@
 			http://www.springframework.org/schema/osgi/spring-osgi.xsd
             http://www.springframework.org/schema/jms 
             http://www.springframework.org/schema/jms/spring-jms-2.5.xsd">
+    <!-- 插件主要处理逻辑的入口 -->
+    <bean id="luncher" class="me.vurt.nms.core.node.client.ClientLuncher" />
+	<osgi:service ref="luncher"
+		interface="org.springframework.osgi.context.event.OsgiBundleApplicationContextListener"></osgi:service>
+		
+	<!-- 负责发送心跳信息的jmsTemplate -->
+	<bean id="registrationJmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory" ref="jmsFactory" />
+		<!-- 每次接收响应超时都会重新发送注册请求，所以注册和响应消息都必须使用非持久化的消息，超时立即删除，避免出现同一个节点注册多次造成的未知问题 -->
+		<property name="deliveryPersistent" value="false" />
+		<property name="defaultDestination" ref="registrationQueue" />
+	</bean>
+            
 	<!-- 负责发送心跳信息的jmsTemplate -->
 	<bean id="heartBeatJmsTemplate" class="org.springframework.jms.core.JmsTemplate">
 		<property name="connectionFactory" ref="jmsFactory" />
+		<property name="deliveryPersistent" value="false" />
 		<property name="defaultDestination" ref="heartBeatQueue" />
 	</bean>
 	
@@ -40,7 +54,10 @@
 		<property name="repeatInterval" value="${client.heartBeat.repeatInterval}" />
 	</bean>
 
-	<bean id="startQuertz" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+	<!-- 心跳定时任务的启动器，SchedulerFactoryBean实际上是一个FactoryBean，通过id从context中获取的bean的真实类型是org.quartz.Scheduler -->
+	<bean id="heartBeatScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<!-- 初始化后不会自动开始发送心跳 -->
+		<property name="autoStartup" value="false"/>
 		<property name="triggers">
 			<list>
 				<ref bean="heartBeatTrigger" />

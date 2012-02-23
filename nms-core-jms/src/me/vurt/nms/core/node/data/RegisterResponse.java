@@ -4,7 +4,7 @@ package me.vurt.nms.core.node.data;
  * @author yanyl
  *
  */
-public class RegistrationResponse {
+public class RegisterResponse {
 	private boolean succeed;
 	
 	private String errorMessage;
