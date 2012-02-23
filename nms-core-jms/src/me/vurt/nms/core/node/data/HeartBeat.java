@@ -1,6 +1,5 @@
 package me.vurt.nms.core.node.data;
 
-import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -8,12 +7,12 @@ import java.util.Map;
  * @author yanyl
  * 
  */
-public interface HeartBeat extends Serializable {
+public interface HeartBeat extends Data {
 	
 	/**
 	 * @return 节点IP地址
 	 */
-	public String getIP();
+	public String getIp();
 	
 	/**
 	 * @return 节点所属分组

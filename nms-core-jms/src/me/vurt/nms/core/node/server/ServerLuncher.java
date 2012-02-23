@@ -9,10 +9,11 @@ import me.vurt.nms.core.jms.JMSFactory;
 import me.vurt.nms.core.jms.MessageListener;
 import me.vurt.nms.core.jms.impl.StaticMessageListener;
 import me.vurt.nms.core.node.AbstractNodeLuncher;
+import me.vurt.nms.core.node.client.ClientNode;
 import me.vurt.nms.core.node.server.handler.HeartBeatHandler;
 import me.vurt.nms.core.node.server.handler.RegistrationHandler;
 import me.vurt.nms.core.node.util.BeanConstants;
-import me.vurt.nms.core.node.util.NodeInfoReader;
+import me.vurt.nms.core.node.util.GlobalConfigReader;
 
 import org.h2.tools.Server;
 
@@ -34,13 +35,14 @@ public class ServerLuncher extends AbstractNodeLuncher {
 	 */
 	@Override
 	protected void start() {
-		if (NodeInfoReader.debugMode()) {
+		if (GlobalConfigReader.debugMode()) {
 			try {
 				h2Server = Server.createWebServer().start();
 			} catch (SQLException e) {
 				LOGGER.error("H2数据库启动失败", e);
 			}
 		}
+		
 		heartBeatListener = JMSFactory
 				.getMessageListener((Destination) ApplicationContextHolder
 						.getBean(BeanConstants.HEART_BEAT_QUEUE_BEAN));

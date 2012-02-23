@@ -5,7 +5,8 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 
 import me.vurt.nms.core.jms.MessageProducer;
-import me.vurt.nms.core.node.util.NodeInfoReader;
+import me.vurt.nms.core.node.Node;
+import me.vurt.nms.core.node.util.GlobalConfigReader;
 import me.vurt.nms.core.node.util.NodeConstants;
 
 import org.slf4j.Logger;
@@ -71,15 +72,13 @@ public class MessageProducerImpl implements MessageProducer {
 		@Override
 		public Message postProcessMessage(Message message) throws JMSException {
 			// 只有客户端发送消息前需要添加额外信息
-			if(!NodeInfoReader.isClient()){
+			if(!GlobalConfigReader.isClient()){
 				return message;
 			}
-			String group = NodeInfoReader.getNodeGroup();
-			String id = NodeInfoReader.getNodeID();
-			message.setStringProperty(NodeConstants.PROPERTY_NODE_GROUP, group);
-			message.setStringProperty(NodeConstants.PROPERTY_NODE_ID, id);
-			LOGGER.debug("向消息头添加属性:"+NodeConstants.PROPERTY_NODE_GROUP+"="+group);
-			LOGGER.debug("向消息头添加属性:"+NodeConstants.PROPERTY_NODE_ID+"="+id);
+			message.setStringProperty(NodeConstants.PROPERTY_NODE_GROUP, Node.CURRENT.getGroup());
+			message.setStringProperty(NodeConstants.PROPERTY_NODE_ID, Node.CURRENT.getId());
+			LOGGER.debug("向消息头添加属性:"+NodeConstants.PROPERTY_NODE_GROUP+"="+Node.CURRENT.getGroup());
+			LOGGER.debug("向消息头添加属性:"+NodeConstants.PROPERTY_NODE_ID+"="+Node.CURRENT.getId());
 			return message;
 		}
 

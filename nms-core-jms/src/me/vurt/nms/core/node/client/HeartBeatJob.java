@@ -1,6 +1,7 @@
 package me.vurt.nms.core.node.client;
 
 import me.vurt.nms.core.jms.MessageProducer;
+import me.vurt.nms.core.node.data.DataFactory;
 import me.vurt.nms.core.node.data.HeartBeat;
 
 import org.slf4j.Logger;
@@ -24,7 +25,7 @@ public class HeartBeatJob {
 	}
 	
 	public void doHeartBeat(){
-		HeartBeat heartBeat=HeartBeanFactory.createHeartBeat();
+		HeartBeat heartBeat=DataFactory.createHeartBeat();
 		producer.send(heartBeat);
 		LOGGER.debug("发送心跳信息已发送："+heartBeat.toString());
 		//TODO:传递心跳信息回服务器

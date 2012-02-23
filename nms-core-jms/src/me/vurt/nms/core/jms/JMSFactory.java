@@ -8,8 +8,10 @@ import me.vurt.nms.core.jms.exception.InvalidJMSConfigException;
 import me.vurt.nms.core.jms.impl.NMSMessageListenerAdapter;
 import me.vurt.nms.core.jms.impl.StaticMessageListener;
 import me.vurt.nms.core.jms.util.MessageListenerCache;
+import me.vurt.nms.core.node.Node;
+import me.vurt.nms.core.node.client.ClientNode;
 import me.vurt.nms.core.node.util.BeanConstants;
-import me.vurt.nms.core.node.util.NodeInfoReader;
+import me.vurt.nms.core.node.util.GlobalConfigReader;
 import me.vurt.nms.core.node.util.NodeConstants;
 
 import org.slf4j.Logger;
@@ -144,13 +146,14 @@ public class JMSFactory {
 	 * 构建只接收发送给当前节点消息的选择器的表达式
 	 */
 	public static String getMessageSelector(){
-		String group = NodeInfoReader.getNodeGroup();
-		String id = NodeInfoReader.getNodeID();
-		//TODO:语法不对...
-		String messageSelector ="\""+ NodeConstants.PROPERTY_NODE_GROUP+"\"" + " = "
-				+ group + " AND \"" + NodeConstants.PROPERTY_NODE_ID+"\"" + " = "
-				+ id;
-		LOGGER.debug("当前节点的MessageSelector");
+		if(!GlobalConfigReader.isClient()){
+			LOGGER.warn("当前节点不是客户端，不需要过滤信息");
+			 return "";
+		}
+		String messageSelector ="\'"+ NodeConstants.PROPERTY_NODE_GROUP+"\'" + " = "
+				+ Node.CURRENT.getGroup() + " AND \'" + NodeConstants.PROPERTY_NODE_ID+"\'" + " = "
+				+ Node.CURRENT.getId();
+		LOGGER.debug("当前节点的MessageSelector="+messageSelector);
 		return messageSelector;
 	}
 
@@ -164,7 +167,7 @@ public class JMSFactory {
 	private static void initMessageSelector(
 			DefaultMessageListenerContainer listenerContainer) {
 		// 当前节点的类型是客户端
-		if (NodeInfoReader.isClient()) {
+		if (GlobalConfigReader.isClient()) {
 			listenerContainer.setMessageSelector(getMessageSelector());
 		}
 	}

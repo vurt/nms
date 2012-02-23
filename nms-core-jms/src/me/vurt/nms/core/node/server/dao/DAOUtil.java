@@ -3,7 +3,7 @@ package me.vurt.nms.core.node.server.dao;
 import javax.sql.DataSource;
 
 import me.vurt.nms.core.common.properties.PropertiesManager;
-import me.vurt.nms.core.node.util.NodeInfoReader;
+import me.vurt.nms.core.node.util.GlobalConfigReader;
 import me.vurt.nms.core.node.util.NodeConstants;
 
 import org.apache.commons.dbcp.BasicDataSource;
@@ -25,7 +25,7 @@ public class DAOUtil {
 	 */
 	public static DataSource getServerDataSource() {
 		if (sds == null) {
-			PropertiesManager configManager = NodeInfoReader
+			PropertiesManager configManager = GlobalConfigReader
 					.getPropertiesManager();
 			sds = new BasicDataSource();
 			sds.setDriverClassName(configManager
