@@ -1,15 +1,17 @@
-package me.vurt.nms.core.jms;
+package me.vurt.nms.core.data;
 
-import java.io.Serializable;
 import java.util.Map;
 
+import me.vurt.nms.core.jms.MessageHandler;
+
 /**
+ * 响应消息
  * @author yanyl
  *
  */
-public interface ResponseMessage extends Serializable{
+public interface Response extends Data{
 	/**
-	 * 响应是否为空，为空则不发送响应
+	 * 响应是否为空，为空(返回true)则不发送响应
 	 * @return
 	 */
 	boolean isEmpty();

@@ -1,8 +1,9 @@
 package me.vurt.nms.core.node.client;
 
+import me.vurt.nms.core.data.DataFactory;
+import me.vurt.nms.core.data.HeartBeat;
 import me.vurt.nms.core.jms.MessageProducer;
-import me.vurt.nms.core.node.data.DataFactory;
-import me.vurt.nms.core.node.data.HeartBeat;
+import me.vurt.nms.core.jms.exception.MessageSendFailedException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +27,11 @@ public class HeartBeatJob {
 	
 	public void doHeartBeat(){
 		HeartBeat heartBeat=DataFactory.createHeartBeat();
-		producer.send(heartBeat);
+		try {
+			producer.send(heartBeat);
+		} catch (MessageSendFailedException e) {
+			e.printStackTrace();
+		}
 		LOGGER.debug("发送心跳信息已发送："+heartBeat.toString());
 		//TODO:传递心跳信息回服务器
 	}

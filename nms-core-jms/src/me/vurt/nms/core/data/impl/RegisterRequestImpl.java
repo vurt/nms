@@ -1,7 +1,7 @@
-package me.vurt.nms.core.node.data.impl;
+package me.vurt.nms.core.data.impl;
 
+import me.vurt.nms.core.data.RegisterRequest;
 import me.vurt.nms.core.node.Node;
-import me.vurt.nms.core.node.data.RegisterRequest;
 
 /**
  * 节点注册请求，初始化时默认包含了当前节点的信息

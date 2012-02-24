@@ -1,4 +1,4 @@
-package me.vurt.nms.core.node.data;
+package me.vurt.nms.core.data;
 
 
 /**

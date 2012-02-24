@@ -1,4 +1,4 @@
-package me.vurt.nms.core.node.data;
+package me.vurt.nms.core.data;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -6,9 +6,9 @@ import java.util.Collection;
 import java.util.Date;
 
 import me.vurt.nms.core.Activator;
+import me.vurt.nms.core.data.impl.HeartBeatImpl;
+import me.vurt.nms.core.data.impl.RegisterRequestImpl;
 import me.vurt.nms.core.node.Node;
-import me.vurt.nms.core.node.data.impl.HeartBeatImpl;
-import me.vurt.nms.core.node.data.impl.RegisterRequestImpl;
 import me.vurt.nms.core.node.util.NodeConstants;
 
 import org.osgi.framework.BundleContext;

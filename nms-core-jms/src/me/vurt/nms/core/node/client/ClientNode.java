@@ -1,7 +1,6 @@
 package me.vurt.nms.core.node.client;
 
 import me.vurt.nms.core.common.properties.PropertiesManager;
-import me.vurt.nms.core.common.tools.GlobalConfigFileReader;
 import me.vurt.nms.core.common.tools.IPParser;
 import me.vurt.nms.core.node.Node;
 import me.vurt.nms.core.node.util.GlobalConfigReader;

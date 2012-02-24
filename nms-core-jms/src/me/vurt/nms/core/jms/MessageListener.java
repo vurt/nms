@@ -8,16 +8,20 @@ import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Message;
 
-import me.vurt.nms.core.jms.impl.DefaultReponseMessage;
+import me.vurt.nms.core.data.Response;
+import me.vurt.nms.core.data.impl.DefaultResponse;
 import me.vurt.nms.core.jms.util.MessageListenerCache;
 import me.vurt.nms.core.node.util.NodeConstants;
+import me.vurt.nms.core.node.util.PropertyNameUtil;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 消息监听器的实现类，可以添加具体的处理实例，启动和关闭监听
+ * 异步消息监听器的实现类，可以添加具体的处理实例，启动和关闭监听<BR>
+ * 消息的响应对象默认使用{@link DefaultResponse}，可以通过
+ * {@link MessageListener#setResponseType(Class)}修改
  * 
  * @author yanyl
  * 
@@ -60,11 +64,39 @@ public abstract class MessageListener {
 		}
 	}
 
+	private static final Class<? extends Response> DEFAULT_RESPONSE_CLASS = DefaultResponse.class;
+
+	private Class<? extends Response> responseClass = DEFAULT_RESPONSE_CLASS;
+
+	/**
+	 * 设置响应消息的类型，如果不设置则默认使用{@link DefaultResponse}
+	 * 
+	 * @param clazz
+	 */
+	public void setResponseType(Class<? extends Response> clazz) {
+		this.responseClass = clazz;
+	}
+
+	/**
+	 * 创建响应对象
+	 * 
+	 * @return
+	 */
+	private Response createResponse() {
+		try {
+			return responseClass.newInstance();
+		} catch (Exception e) {
+			LOGGER.error("响应消息" + responseClass.getName()
+					+ "创建失败", e);
+		}
+		throw new RuntimeException("无法创建响应消息，消息类型："+responseClass.getName());
+	}
+
 	/**
 	 * 消息处理器Map，Key是处理器id，Value是处理器实例
 	 */
 	protected Map<String, MessageHandler> handlers = new LinkedHashMap<String, MessageHandler>();
-	
+
 	/**
 	 * 添加处理器
 	 * 
@@ -103,7 +135,7 @@ public abstract class MessageListener {
 		if (handlers.size() == 0) {
 			LOGGER.warn("没有设置任何处理器");
 		}
-		ResponseMessage response = new DefaultReponseMessage();
+		Response response = createResponse();
 		for (MessageHandler handler : getValidHandlers()) {
 			try {
 				Object result = handler.handle(msg);
@@ -118,7 +150,7 @@ public abstract class MessageListener {
 		if (!response.isEmpty()) {
 			return response;
 		}
-		//TODO:怎么样将响应消息以非持久化的方式发送
+		// TODO:怎么样将响应消息以非持久化的方式发送
 		return null;
 	}
 
@@ -128,15 +160,15 @@ public abstract class MessageListener {
 	public void postProcessResponse(Message request, Message response) {
 		try {
 			String group = request
-					.getStringProperty(NodeConstants.PROPERTY_NODE_GROUP);
+					.getStringProperty(PropertyNameUtil.toJMSName(NodeConstants.PROPERTY_NODE_GROUP));
 			String id = request
-					.getStringProperty(NodeConstants.PROPERTY_NODE_ID);
+					.getStringProperty(PropertyNameUtil.toJMSName(NodeConstants.PROPERTY_NODE_ID));
 			if (!StringUtils.isEmpty(group)) {
-				response.setStringProperty(NodeConstants.PROPERTY_NODE_GROUP,
+				response.setStringProperty(PropertyNameUtil.toJMSName(NodeConstants.PROPERTY_NODE_GROUP),
 						group);
 			}
 			if (!StringUtils.isEmpty(id)) {
-				response.setStringProperty(NodeConstants.PROPERTY_NODE_ID, id);
+				response.setStringProperty(PropertyNameUtil.toJMSName(NodeConstants.PROPERTY_NODE_ID), id);
 			}
 		} catch (JMSException e) {
 			LOGGER.debug("读取消息头时发生异常", e);

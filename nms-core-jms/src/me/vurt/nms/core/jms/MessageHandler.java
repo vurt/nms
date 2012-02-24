@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * 异步消息处理器，等待消息时不阻塞，接收到消息后会调用{@link #handle(Object)}
  * @author yanyl
  *
  */

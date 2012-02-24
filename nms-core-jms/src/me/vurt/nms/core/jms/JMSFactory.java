@@ -9,10 +9,10 @@ import me.vurt.nms.core.jms.impl.NMSMessageListenerAdapter;
 import me.vurt.nms.core.jms.impl.StaticMessageListener;
 import me.vurt.nms.core.jms.util.MessageListenerCache;
 import me.vurt.nms.core.node.Node;
-import me.vurt.nms.core.node.client.ClientNode;
 import me.vurt.nms.core.node.util.BeanConstants;
 import me.vurt.nms.core.node.util.GlobalConfigReader;
 import me.vurt.nms.core.node.util.NodeConstants;
+import me.vurt.nms.core.node.util.PropertyNameUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,9 +21,7 @@ import org.springframework.jms.listener.adapter.MessageListenerAdapter;
 import org.springframework.util.Assert;
 
 /**
- * NMS JMS工具工厂<BR>
- * 如果该工厂的调用者是客户端节点，那么创建出来的所有消息监听器都只接受发送给当前节点的消息，该消息选择器无法修改
- * (即，消息头中{@link NodeConstants#PROPERTY_NODE_GROUP}和{@link NodeConstants#PROPERTY_NODE_ID}属性值与当前节点匹配)
+ * 通讯接口工厂<BR>
  * 
  * @author yanyl
  * 
@@ -33,12 +31,7 @@ public class JMSFactory {
 			.getLogger(JMSFactory.class);
 
 	/**
-	 * 连接工程bean名称
-	 */
-	public static final String CONNECTION_FACTORY_BEAN_NAME = "connectionFactory";
-
-	/**
-	 * 新建消息生产者实例，需要手动设置JmsTemplate后才能使用
+	 * 新建消息生产者实例
 	 * 
 	 * @return
 	 */
@@ -51,7 +44,9 @@ public class JMSFactory {
 	}
 
 	/**
-	 * 获取消息监听器
+	 * 获取消息监听器, 如果该方法的调用者运行在客户端节点，那么创建出来的所有消息监听器都只接受发送给当前节点的消息，该消息选择器无法修改 (即，消息头中
+	 * {@link NodeConstants#PROPERTY_NODE_GROUP}和
+	 * {@link NodeConstants#PROPERTY_NODE_ID}属性值与当前节点匹配)
 	 * 
 	 * @param destination
 	 *            要监听的目标
@@ -75,6 +70,7 @@ public class JMSFactory {
 	 * @param responseDestination
 	 *            默认响应目标，只有在接受到的Message的JMS Reply-To属性为空时才有效，只有在新建时设置有效
 	 * @return 消息监听器，默认新建出来时是未启动状态
+	 * @deprecated 响应信息应该在发送端设置，而不是接收端
 	 */
 	public static MessageListener getMessageListener(Destination destination,
 			Destination responseDestination) {
@@ -92,9 +88,9 @@ public class JMSFactory {
 	 * 
 	 * @return
 	 */
-	private static ConnectionFactory getConnectionFactory() {
+	public static ConnectionFactory getConnectionFactory() {
 		return (ConnectionFactory) ApplicationContextHolder
-				.getBean(CONNECTION_FACTORY_BEAN_NAME);
+				.getBean(BeanConstants.CONNECTION_FACTORY);
 	}
 
 	/**
@@ -141,19 +137,23 @@ public class JMSFactory {
 		MessageListenerCache.put(listenerContainer, listener);
 		return listenerContainer;
 	}
-	
+
 	/**
 	 * 构建只接收发送给当前节点消息的选择器的表达式
 	 */
-	public static String getMessageSelector(){
-		if(!GlobalConfigReader.isClient()){
+	public static String getMessageSelector() {
+		if (!GlobalConfigReader.isClient()) {
 			LOGGER.warn("当前节点不是客户端，不需要过滤信息");
-			 return "";
+			return "";
 		}
-		String messageSelector ="\'"+ NodeConstants.PROPERTY_NODE_GROUP+"\'" + " = "
-				+ Node.CURRENT.getGroup() + " AND \'" + NodeConstants.PROPERTY_NODE_ID+"\'" + " = "
-				+ Node.CURRENT.getId();
-		LOGGER.debug("当前节点的MessageSelector="+messageSelector);
+		String messageSelector = PropertyNameUtil
+				.toJMSName(NodeConstants.PROPERTY_NODE_GROUP)
+				+ " = \'"
+				+ Node.CURRENT.getGroup()
+				+ "\' AND "
+				+ PropertyNameUtil.toJMSName(NodeConstants.PROPERTY_NODE_ID)
+				+ " = \'" + Node.CURRENT.getId() +"\'";
+		LOGGER.debug("当前节点的MessageSelector=" + messageSelector);
 		return messageSelector;
 	}
 

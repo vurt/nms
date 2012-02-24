@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<component id="nms-core-jms" version="2">
+    <resource path="src/me/vurt/nms/core/jms/impl/MessageProducerImpl.java" type="me.vurt.nms.core.jms.impl.MessageProducerImpl">
+        <filter id="576725006">
+            <message_arguments>
+                <message_argument value="MessageProducer"/>
+                <message_argument value="MessageProducerImpl"/>
+            </message_arguments>
+        </filter>
+    </resource>
+</component>

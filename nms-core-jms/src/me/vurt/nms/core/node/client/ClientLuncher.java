@@ -3,21 +3,21 @@ package me.vurt.nms.core.node.client;
 import javax.jms.Destination;
 
 import me.vurt.nms.core.ApplicationContextHolder;
+import me.vurt.nms.core.data.DataFactory;
+import me.vurt.nms.core.data.RegisterRequest;
+import me.vurt.nms.core.data.RegisterResponse;
 import me.vurt.nms.core.jms.JMSFactory;
 import me.vurt.nms.core.jms.MessageProducer;
 import me.vurt.nms.core.jms.exception.MessageHandleException;
+import me.vurt.nms.core.jms.exception.MessageReceiveFailedException;
+import me.vurt.nms.core.jms.exception.MessageSendFailedException;
 import me.vurt.nms.core.node.AbstractNodeLuncher;
 import me.vurt.nms.core.node.Node;
 import me.vurt.nms.core.node.client.exception.RegisterException;
-import me.vurt.nms.core.node.data.DataFactory;
-import me.vurt.nms.core.node.data.RegisterRequest;
-import me.vurt.nms.core.node.data.RegisterResponse;
 import me.vurt.nms.core.node.util.BeanConstants;
 
-import org.h2.util.New;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
-import org.springframework.jms.core.JmsTemplate;
 
 /**
  * @author yanyl
@@ -56,30 +56,28 @@ public class ClientLuncher extends AbstractNodeLuncher {
 	private void register() throws RegisterException {
 		if (!Node.CURRENT.isRegisted()) {
 			MessageProducer regProducer = JMSFactory.createProducer();
-			//该bean发送消息应该都是以非持久化的方式发送，在Spring中定义
-			JmsTemplate regTemplate = (JmsTemplate) ApplicationContextHolder
-					.getBean(BeanConstants.REGISTRATION_JMS_TEMPLATE);
-			regProducer.setJmsTemplate(regTemplate);
-			RegisterRequest request=DataFactory.createRegisterRequest();
-			regProducer.send(request);
-			LOGGER.info("正在向服务器注册当前节点: group="+request.getGroup()+";id="+request.getId());
-			// TODO:发送超时需要重试
-
+			Destination registerQueue= (Destination)ApplicationContextHolder.getBean(BeanConstants.REGISTRATION_QUEUE_BEAN);
 			Destination responseQueue = (Destination) ApplicationContextHolder
 					.getBean(BeanConstants.REGISTRATION_RESPONSE_QUEUE_BEAN);
-			RegisterResponse response = (RegisterResponse) regTemplate
-					.receiveSelectedAndConvert(responseQueue,
-							JMSFactory.getMessageSelector());
-			if (response == null) {
-				// 接收响应信息超时了，重试
-				LOGGER.info("注册节点时服务器没有响应，尝试再次发送注册请求");
-				register();
-			} else {
-				if (!response.isSucceed()) {
-					LOGGER.error("注册失败，错误信息：" + response.getErrorMessage());
+			
+			RegisterRequest request=DataFactory.createRegisterRequest();
+			try {
+				LOGGER.info("正在向服务器注册当前节点: group="+request.getGroup()+";id="+request.getId());
+				RegisterResponse response =(RegisterResponse)regProducer.sendAndReceive(registerQueue, responseQueue, request);
+				if (response == null) {
+					// 接收响应信息超时了，重试
+					LOGGER.info("注册节点时服务器没有响应，尝试再次发送注册请求");
+					register();
 				} else {
-					LOGGER.info("注册成功");
+					if (!response.isSucceed()) {
+						LOGGER.error("注册失败，错误信息：" + response.getErrors());
+						throw new RegisterException(response.getErrors().toString());
+					} else {
+						LOGGER.info("注册成功");
+					}
 				}
+			} catch (MessageSendFailedException e) {
+			} catch (MessageReceiveFailedException e) {
 			}
 		}
 	}
