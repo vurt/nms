@@ -26,7 +26,7 @@ public class Activator implements BundleActivator {
 	 * )
 	 */
 	public void start(BundleContext bundleContext) throws Exception {
-		this.context=bundleContext;
+		context=bundleContext;
 		LOGGER.info("nms-core is started!");
 	}
 
