@@ -17,6 +17,11 @@ public interface NodeConstants {
 	String SYS_PROPERTY_NODE_TYPE="nms.node.type";
 	
 	/**
+	 * 属性名:节点验证key，程序自动维护的值，请勿手动修改
+	 */
+	String PROPERTY_NODE_KEY="sys.nms.node.key";
+	
+	/**
 	 * 属性名:节点分组
 	 */
 	String PROPERTY_NODE_GROUP="nms.node.group";
@@ -50,8 +55,12 @@ public interface NodeConstants {
 	 * 属性名：数据库密码
 	 */
 	String PROPERTY_DB_PASSWORD="nms.server.db.password";
+	
+	/**
+	 * 响应信息中"节点Key"的key
+	 */
+	String RESPONSE_NODE_KEY="node_key";
 
-			
 	/**
 	 * 节点类型，服务端
 	 */
@@ -65,6 +74,6 @@ public interface NodeConstants {
 	/**
 	 * 系统使用的标准日期格式
 	 */
-	String DATE_FORMAT_PATTERN="y-M-d h:m:s";
+	String DATE_FORMAT_PATTERN="yyyy-MM-dd hh:mm:ss";
 			
 }

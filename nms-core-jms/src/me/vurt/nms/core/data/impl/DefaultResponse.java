@@ -50,16 +50,13 @@ public class DefaultResponse implements Response {
 	public Map<String, String> getErrors() {
 		return errors;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see me.vurt.nms.core.data.Response#addResponse(java.lang.String,
-	 * java.lang.Object)
+	
+	/* (non-Javadoc)
+	 * @see me.vurt.nms.core.data.Response#addResponses(java.util.Map)
 	 */
 	@Override
-	public void addResponse(String handlerID, Object response) {
-		responses.put(handlerID, response);
+	public void addResponses(Map<String, Object> responses) {
+		this.responses.putAll(responses);
 	}
 
 	/*
@@ -72,4 +69,11 @@ public class DefaultResponse implements Response {
 		return responses;
 	}
 
+	/* (non-Javadoc)
+	 * @see me.vurt.nms.core.data.Response#getResponse(java.lang.String)
+	 */
+	@Override
+	public Object getResponse(String key) {
+		return responses.get(key);
+	}
 }

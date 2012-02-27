@@ -17,6 +17,10 @@ public class RegisterRequestImpl implements RegisterRequest{
 	private String id;
 	
 	private String group;
+	
+	private String host;
+	
+	private String key;
 	/**
 	 * 初始化注册请求
 	 * @param node 要注册的节点
@@ -24,6 +28,8 @@ public class RegisterRequestImpl implements RegisterRequest{
 	public RegisterRequestImpl(Node node){
 		this.id=node.getId();
 		this.group=node.getGroup();
+		this.host=node.getHost();
+		this.key=node.getKey();
 	}
 
 	/**
@@ -38,5 +44,21 @@ public class RegisterRequestImpl implements RegisterRequest{
 	 */
 	public String getGroup() {
 		return group;
+	}
+
+	/* (non-Javadoc)
+	 * @see me.vurt.nms.core.data.RegisterRequest#getHost()
+	 */
+	@Override
+	public String getHost() {
+		return host;
+	}
+
+	/* (non-Javadoc)
+	 * @see me.vurt.nms.core.data.RegisterRequest#getKey()
+	 */
+	@Override
+	public String getKey() {
+		return key;
 	}
 }

@@ -29,8 +29,10 @@ public interface Node {
 	String getHost();
 	
 	/**
-	 * @return 当前节点是否是已注册状态
+	 * 节点注册成功时，服务器会给节点分配一个唯一的key，
+	 * 以后节点每次节点申请连接服务器时都需要把该key传回服务器进行验证
+	 * @return 服务器分配给节点的key
 	 */
-	boolean isRegisted();
-
+	String getKey();
+	
 }

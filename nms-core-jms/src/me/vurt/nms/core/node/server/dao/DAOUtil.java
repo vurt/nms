@@ -41,6 +41,7 @@ public class DAOUtil {
 
 	/**
 	 * 获取服务端dao
+	 * 
 	 * @return
 	 */
 	public static Dao getServerDao() {
@@ -48,6 +49,16 @@ public class DAOUtil {
 			sDao = new NutDao(getServerDataSource());
 		}
 		return sDao;
+	}
+
+	/**
+	 * 获取节点服务
+	 * @return
+	 */
+	public static NodeService getNodeService() {
+		NodeService service = new NodeService(getServerDao(),
+				TNode.class);
+		return service;
 	}
 
 }

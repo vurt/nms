@@ -1,10 +1,11 @@
 package me.vurt.nms.core.node.server.exception;
 
+
 /**
  * @author yanyl
  *
  */
-public class BadRequestException extends RuntimeException {
+public class BadRequestException extends Exception {
 
 	/**
 	 * 

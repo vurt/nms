@@ -30,14 +30,21 @@ public interface Response extends Data{
 	Map<String, String> getErrors();
 	
 	/**
-	 * 添加一条响应数据
-	 * @param handlerID 处理器ID
-	 * @param response 响应数据
+	 * 添加多条响应数据
+	 * @param respones
 	 */
-	void addResponse(String handlerID,Object response);
+	void addResponses(Map<String, Object> responses);
+	
 	/**
-	 * 获取响应数据
-	 * @return 响应数据Map，Key是{@link MessageHandler#getId() 消息处理器ID}，Value具体响应数据
+	 * 获取所有响应数据
+	 * @return 响应数据Map
 	 */
 	Map<String, Object> getResponses();
+	
+	/**
+	 * 获取响应数据
+	 * @param key
+	 * @return
+	 */
+	Object getResponse(String key);
 }

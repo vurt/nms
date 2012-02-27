@@ -1,5 +1,7 @@
 package me.vurt.nms.core.node.server.handler;
 
+import java.util.Map;
+
 import me.vurt.nms.core.jms.MessageHandler;
 
 /**
@@ -21,7 +23,7 @@ public class HeartBeatHandler implements MessageHandler {
 	 * @see me.vurt.nms.core.jms.MessageHandler#handle(java.lang.Object)
 	 */
 	@Override
-	public Object handle(Object msg) {
+	public Map<String, Object> handle(Object msg) {
 		LOGGER.debug("处理了一条心跳信息:"+msg);
 		return null;
 	}

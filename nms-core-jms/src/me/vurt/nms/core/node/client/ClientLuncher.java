@@ -6,6 +6,7 @@ import me.vurt.nms.core.ApplicationContextHolder;
 import me.vurt.nms.core.data.DataFactory;
 import me.vurt.nms.core.data.RegisterRequest;
 import me.vurt.nms.core.data.RegisterResponse;
+import me.vurt.nms.core.data.exception.RegisterException;
 import me.vurt.nms.core.jms.JMSFactory;
 import me.vurt.nms.core.jms.MessageProducer;
 import me.vurt.nms.core.jms.exception.MessageHandleException;
@@ -13,8 +14,8 @@ import me.vurt.nms.core.jms.exception.MessageReceiveFailedException;
 import me.vurt.nms.core.jms.exception.MessageSendFailedException;
 import me.vurt.nms.core.node.AbstractNodeLuncher;
 import me.vurt.nms.core.node.Node;
-import me.vurt.nms.core.node.client.exception.RegisterException;
 import me.vurt.nms.core.node.util.BeanConstants;
+import me.vurt.nms.core.node.util.NodeConstants;
 
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
@@ -54,7 +55,6 @@ public class ClientLuncher extends AbstractNodeLuncher {
 	 *             如果无法完成注册
 	 */
 	private void register() throws RegisterException {
-		if (!Node.CURRENT.isRegisted()) {
 			MessageProducer regProducer = JMSFactory.createProducer();
 			Destination registerQueue= (Destination)ApplicationContextHolder.getBean(BeanConstants.REGISTRATION_QUEUE_BEAN);
 			Destination responseQueue = (Destination) ApplicationContextHolder
@@ -73,13 +73,15 @@ public class ClientLuncher extends AbstractNodeLuncher {
 						LOGGER.error("注册失败，错误信息：" + response.getErrors());
 						throw new RegisterException(response.getErrors().toString());
 					} else {
-						LOGGER.info("注册成功");
+						LOGGER.info("连接成功");
+						//每次连接都会返回一个Key
+						((ClientNode)Node.CURRENT).setKey(response.getResponse(NodeConstants.RESPONSE_NODE_KEY).toString());
+						
 					}
 				}
 			} catch (MessageSendFailedException e) {
 			} catch (MessageReceiveFailedException e) {
 			}
-		}
 	}
 
 	/*

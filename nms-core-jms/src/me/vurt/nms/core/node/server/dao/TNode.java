@@ -17,14 +17,14 @@ public class TNode implements Node{
 	/**
 	 * 节点ID，主键，唯一
 	 */
-	@Column
+	@Column("node_id")
 	@Name(casesensitive=false)
 	private String id;
 	
 	/**
 	 * 节点所在分组名称
 	 */
-	@Column
+	@Column("node_group")
 	private String group;
 	
 	/**
@@ -34,6 +34,12 @@ public class TNode implements Node{
 	private String host;
 	
 	/**
+	 * 节点注册成功时，服务器分配给节点的唯一的key，用于节点请求连接时验证
+	 */
+	@Column("node_key")
+	private String key;
+	
+	/**
 	 * 最后一次心跳的时间
 	 */
 	@Column
@@ -41,11 +47,11 @@ public class TNode implements Node{
 	
 	public TNode(){}
 	
-	public TNode(String group,String id,String host){
-		this();
+	public TNode(String group,String id,String host,String key){
 		setGroup(group);
 		setId(id);
 		setHost(host);
+		setKey(key);
 	}
 	
 	/**
@@ -93,10 +99,16 @@ public class TNode implements Node{
 	public void setDesc(String desc) {
 		this.desc = desc;
 	}
-
-	@Override
-	public boolean isRegisted() {
-		//服务端能查找到的节点肯定是已注册的
-		return true;
+	
+	/**
+	 * @param key the key to set
+	 */
+	public void setKey(String key) {
+		this.key = key;
 	}
+
+	public String getKey() {
+		return key;
+	}
+
 }

@@ -10,6 +10,8 @@ import me.vurt.nms.core.jms.JMSFactory;
 import me.vurt.nms.core.jms.MessageListener;
 import me.vurt.nms.core.jms.impl.StaticMessageListener;
 import me.vurt.nms.core.node.AbstractNodeLuncher;
+import me.vurt.nms.core.node.server.dao.DAOUtil;
+import me.vurt.nms.core.node.server.dao.TNode;
 import me.vurt.nms.core.node.server.handler.HeartBeatHandler;
 import me.vurt.nms.core.node.server.handler.RegistrationHandler;
 import me.vurt.nms.core.node.util.BeanConstants;
@@ -38,6 +40,7 @@ public class ServerLuncher extends AbstractNodeLuncher {
 		if (GlobalConfigReader.debugMode()) {
 			try {
 				h2Server = Server.createWebServer().start();
+				DAOUtil.getServerDao().create(TNode.class, false);
 			} catch (SQLException e) {
 				LOGGER.error("H2数据库启动失败", e);
 			}
