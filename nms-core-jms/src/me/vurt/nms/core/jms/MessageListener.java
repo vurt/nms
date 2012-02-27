@@ -138,9 +138,9 @@ public abstract class MessageListener {
 		Response response = createResponse();
 		for (MessageHandler handler : getValidHandlers()) {
 			try {
-				Object result = handler.handle(msg);
+				Map<String, Object> result = handler.handle(msg);
 				if (result != null) {
-					response.addResponse(handler.getId(), result);
+					response.addResponses(result);
 				}
 			} catch (Exception e) {
 				LOGGER.error("处理消息时发生异常，handlerID:" + handler.getId(), e);

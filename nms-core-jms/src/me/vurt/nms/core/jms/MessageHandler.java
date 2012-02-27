@@ -1,5 +1,7 @@
 ﻿package me.vurt.nms.core.jms;
 
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,5 +22,5 @@ public interface MessageHandler {
 	 * @param msg 要处理的消息
 	 * @return 处理消息的响应结果，如果为null则表示不需要响应
 	 */
-	Object handle(Object msg) throws Exception;
+	Map<String, Object> handle(Object msg) throws Exception;
 }
