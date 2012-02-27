@@ -113,8 +113,7 @@ public class MessageProducerImpl implements MessageProducer {
 	 */
 	private JmsTemplate getJmsTemplate(){
 		if(jmsTemplate==null){
-			jmsTemplate=new JmsTemplate();
-			jmsTemplate.setConnectionFactory(JMSFactory.getConnectionFactory());
+			jmsTemplate=JMSFactory.createJmsTemplate();
 		}
 		return jmsTemplate;
 	}

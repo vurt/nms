@@ -16,6 +16,7 @@ import me.vurt.nms.core.node.util.PropertyNameUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.listener.DefaultMessageListenerContainer;
 import org.springframework.jms.listener.adapter.MessageListenerAdapter;
 import org.springframework.util.Assert;
@@ -44,8 +45,17 @@ public class JMSFactory {
 	}
 
 	/**
-	 * 获取消息监听器, 如果该方法的调用者运行在客户端节点，那么创建出来的所有消息监听器都只接受发送给当前节点的消息，该消息选择器无法修改 (即，消息头中
-	 * {@link NodeConstants#PROPERTY_NODE_GROUP}和
+	 * 新建JmsTemplate，DefaultDestination为空
+	 */
+	public static JmsTemplate createJmsTemplate() {
+		JmsTemplate jmsTemplate = new JmsTemplate();
+		jmsTemplate.setConnectionFactory(JMSFactory.getConnectionFactory());
+		return jmsTemplate;
+	}
+
+	/**
+	 * 获取消息监听器, 如果该方法的调用者运行在客户端节点，那么创建出来的所有消息监听器都只接受发送给当前节点的消息，该消息选择器无法修改
+	 * (即，消息头中 {@link NodeConstants#PROPERTY_NODE_GROUP}和
 	 * {@link NodeConstants#PROPERTY_NODE_ID}属性值与当前节点匹配)
 	 * 
 	 * @param destination
@@ -152,7 +162,7 @@ public class JMSFactory {
 				+ Node.CURRENT.getGroup()
 				+ "\' AND "
 				+ PropertyNameUtil.toJMSName(NodeConstants.PROPERTY_NODE_ID)
-				+ " = \'" + Node.CURRENT.getId() +"\'";
+				+ " = \'" + Node.CURRENT.getId() + "\'";
 		LOGGER.debug("当前节点的MessageSelector=" + messageSelector);
 		return messageSelector;
 	}
