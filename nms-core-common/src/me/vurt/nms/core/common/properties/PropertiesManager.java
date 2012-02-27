@@ -81,7 +81,7 @@ public class PropertiesManager {
 		OutputStream fos = null;
 		try {
 			fos = new FileOutputStream(fileUrl.getFile());
-			properties.store(fos, "");
+			properties.store(fos, null);
 			flag = true;
 		} catch (IOException e) {
 			e.printStackTrace();
