@@ -111,4 +111,9 @@ public class TNode implements Node{
 		return key;
 	}
 
+	@Override
+	public String toString() {
+		return "TNode [id=" + id + ", group=" + group + ", host=" + host
+				+ ", lastHeartBeat=" + lastHeartBeat + ", desc=" + desc + "]";
+	}
 }
