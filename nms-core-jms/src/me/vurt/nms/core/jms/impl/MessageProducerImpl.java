@@ -1,5 +1,6 @@
 ﻿package me.vurt.nms.core.jms.impl;
 
+import javax.jms.DeliveryMode;
 import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -65,7 +66,7 @@ public class MessageProducerImpl implements MessageProducer {
 			MessageReceiveFailedException {
 		replyToProcessor.setReplyTo(receiveFrom);
 		doSend(sendTo, message, replyToProcessor);
-
+		
 		try {
 			return (Response) getJmsTemplate().receiveSelectedAndConvert(
 					receiveFrom, JMSFactory.getMessageSelector());
@@ -109,11 +110,40 @@ public class MessageProducerImpl implements MessageProducer {
 	}
 	
 	/**
+	 * 设置消息存活时间，默认值是0，永不超时
+	 * 
+	 * @param time
+	 */
+	public void setTimeToLive(long time) {
+		if (time >= 0) {
+			getJmsTemplate().setTimeToLive(time);
+		} else {
+			throw new RuntimeException("错误的消息存活时间:" + time);
+		}
+	}
+
+	/**
+	 * 设置消息的分发类型，可选的值有{@link DeliveryMode#PERSISTENT}|
+	 * {@link DeliveryMode#NON_PERSISTENT}，默认值是{@link DeliveryMode#PERSISTENT}
+	 * 
+	 * @param deliveryMode
+	 */
+	public void setDeliveryPersistent(boolean deliveryPersistent) {
+			getJmsTemplate().setDeliveryPersistent(deliveryPersistent);
+	}
+	
+	@Override
+	public void setReceiveTimeout(long timeout) {
+		getJmsTemplate().setReceiveTimeout(timeout);
+	}
+	
+	/**
 	 *获取JmsTemplate，如果未手动设置则自动新建一个，自动新建的DefaultDestination为空，这时的{@link #send(Object)}方法无效
 	 */
 	private JmsTemplate getJmsTemplate(){
 		if(jmsTemplate==null){
 			jmsTemplate=JMSFactory.createJmsTemplate();
+			jmsTemplate.setExplicitQosEnabled(true);
 		}
 		return jmsTemplate;
 	}

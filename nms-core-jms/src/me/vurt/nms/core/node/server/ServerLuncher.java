@@ -2,6 +2,7 @@ package me.vurt.nms.core.node.server;
 
 import java.sql.SQLException;
 
+import javax.jms.DeliveryMode;
 import javax.jms.Destination;
 
 import me.vurt.nms.core.ApplicationContextHolder;
@@ -59,6 +60,9 @@ public class ServerLuncher extends AbstractNodeLuncher {
 				.getMessageListener((Destination) ApplicationContextHolder
 						.getBean(BeanConstants.REGISTRATION_QUEUE_BEAN));
 		registrationListener.setResponseType(RegisterResponseImpl.class);
+		//注册响应消息以非持久化的方式发送，存活时间5秒，避免某些节点发送注册请求后没来得及处理响应就掉线导致注册响应Queue堵塞
+		registrationListener.setResponseTimeToLive(5000);
+		registrationListener.setResponseDeliveryMode(DeliveryMode.NON_PERSISTENT);
 		if (registrationListener instanceof StaticMessageListener) {
 			((StaticMessageListener) registrationListener)
 					.addMessageHandler(new RegistrationHandler());

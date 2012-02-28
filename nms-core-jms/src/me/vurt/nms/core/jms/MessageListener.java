@@ -4,9 +4,11 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import javax.jms.DeliveryMode;
 import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Message;
+import javax.jms.MessageProducer;
 
 import me.vurt.nms.core.data.Response;
 import me.vurt.nms.core.data.impl.DefaultResponse;
@@ -49,6 +51,38 @@ public abstract class MessageListener {
 		counter++;
 	}
 
+	private long responseTimeToLive = 0;
+
+	/**
+	 * 设置响应消息存活时间，默认值是0，永不超时
+	 * 
+	 * @param time
+	 */
+	public void setResponseTimeToLive(long time) {
+		if (time >= 0) {
+			this.responseTimeToLive = time;
+		} else {
+			throw new RuntimeException("错误的消息存活时间:" + time);
+		}
+	}
+
+	private int responseDeliveryMode = DeliveryMode.PERSISTENT;
+
+	/**
+	 * 设置响应的分发类型，可选的值有{@link DeliveryMode#PERSISTENT}|
+	 * {@link DeliveryMode#NON_PERSISTENT}，默认值是{@link DeliveryMode#PERSISTENT}
+	 * 
+	 * @param deliveryMode
+	 */
+	public void setResponseDeliveryMode(int deliveryMode) {
+		if (deliveryMode == DeliveryMode.PERSISTENT
+				|| deliveryMode == DeliveryMode.NON_PERSISTENT) {
+			this.responseDeliveryMode = deliveryMode;
+		} else {
+			throw new RuntimeException("错误的分发类型:" + deliveryMode);
+		}
+	}
+
 	private Destination destination = null;
 
 	/**
@@ -86,10 +120,9 @@ public abstract class MessageListener {
 		try {
 			return responseClass.newInstance();
 		} catch (Exception e) {
-			LOGGER.error("响应消息" + responseClass.getName()
-					+ "创建失败", e);
+			LOGGER.error("响应消息" + responseClass.getName() + "创建失败", e);
 		}
-		throw new RuntimeException("无法创建响应消息，消息类型："+responseClass.getName());
+		throw new RuntimeException("无法创建响应消息，消息类型：" + responseClass.getName());
 	}
 
 	/**
@@ -155,20 +188,34 @@ public abstract class MessageListener {
 	}
 
 	/**
+	 * 发送响应消息前对消息生成者的处理，默认实现是根据当前监听器的配置，设置消息生产者的分发模式和消息超时时间
+	 * 
+	 * @param producer
+	 * @param response
+	 * @throws JMSException
+	 */
+	public void postProcessProducer(MessageProducer producer, Message response)
+			throws JMSException {
+		producer.setTimeToLive(responseTimeToLive);
+		producer.setDeliveryMode(responseDeliveryMode);
+	}
+
+	/**
 	 * 发送响应消息前的处理，默认实现是将接收到的消息头中的nms.node.group和nms.node.id属性(如果存在)写入到响应消息头中
 	 */
 	public void postProcessResponse(Message request, Message response) {
 		try {
-			String group = request
-					.getStringProperty(PropertyNameUtil.toJMSName(NodeConstants.PROPERTY_NODE_GROUP));
-			String id = request
-					.getStringProperty(PropertyNameUtil.toJMSName(NodeConstants.PROPERTY_NODE_ID));
+			String group = request.getStringProperty(PropertyNameUtil
+					.toJMSName(NodeConstants.PROPERTY_NODE_GROUP));
+			String id = request.getStringProperty(PropertyNameUtil
+					.toJMSName(NodeConstants.PROPERTY_NODE_ID));
 			if (!StringUtils.isEmpty(group)) {
-				response.setStringProperty(PropertyNameUtil.toJMSName(NodeConstants.PROPERTY_NODE_GROUP),
-						group);
+				response.setStringProperty(PropertyNameUtil
+						.toJMSName(NodeConstants.PROPERTY_NODE_GROUP), group);
 			}
 			if (!StringUtils.isEmpty(id)) {
-				response.setStringProperty(PropertyNameUtil.toJMSName(NodeConstants.PROPERTY_NODE_ID), id);
+				response.setStringProperty(PropertyNameUtil
+						.toJMSName(NodeConstants.PROPERTY_NODE_ID), id);
 			}
 		} catch (JMSException e) {
 			LOGGER.debug("读取消息头时发生异常", e);

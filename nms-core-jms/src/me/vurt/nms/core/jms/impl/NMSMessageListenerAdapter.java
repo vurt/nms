@@ -2,6 +2,7 @@
 
 import javax.jms.JMSException;
 import javax.jms.Message;
+import javax.jms.MessageProducer;
 
 import me.vurt.nms.core.jms.MessageListener;
 
@@ -17,6 +18,20 @@ public class NMSMessageListenerAdapter extends MessageListenerAdapter {
 	
 	public NMSMessageListenerAdapter(Object delegate){
 		super(delegate);
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.springframework.jms.listener.adapter.MessageListenerAdapter#postProcessProducer(javax.jms.MessageProducer, javax.jms.Message)
+	 */
+	@Override
+	protected void postProcessProducer(MessageProducer producer,
+			Message response) throws JMSException {
+		super.postProcessProducer(producer, response);
+		
+		if(getDelegate() instanceof MessageListener){
+			MessageListener listener=(MessageListener)getDelegate();
+			listener.postProcessProducer(producer, response);
+		}
 	}
 	
 	/* (non-Javadoc)

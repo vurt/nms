@@ -19,6 +19,8 @@
 	<bean id="heartBeatJmsTemplate" class="org.springframework.jms.core.JmsTemplate">
 		<property name="connectionFactory" ref="jmsFactory" />
 		<property name="deliveryPersistent" value="false" />
+		<!-- 心跳信息只存活5秒 -->
+		<property name="timeToLive" value="5000"/>
 		<property name="defaultDestination" ref="heartBeatQueue" />
 	</bean>
 	
