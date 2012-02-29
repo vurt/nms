@@ -6,11 +6,11 @@ import java.util.Map;
 import me.vurt.nms.core.data.RegisterRequest;
 import me.vurt.nms.core.jms.MessageHandler;
 import me.vurt.nms.core.node.Node;
+import me.vurt.nms.core.node.exception.BadRequestException;
+import me.vurt.nms.core.node.exception.NodeAlreadyExistException;
 import me.vurt.nms.core.node.server.dao.DAOUtil;
 import me.vurt.nms.core.node.server.dao.NodeFactory;
 import me.vurt.nms.core.node.server.dao.NodeService;
-import me.vurt.nms.core.node.server.exception.BadRequestException;
-import me.vurt.nms.core.node.server.exception.NodeAlreadyExistException;
 import me.vurt.nms.core.node.util.NodeConstants;
 
 public class RegistrationHandler implements MessageHandler {

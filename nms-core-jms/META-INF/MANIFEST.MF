@@ -28,6 +28,7 @@ Import-Package: javax.jms;version="1.1.0",
  org.springframework.jms.listener;version="2.5.6.SEC01",
  org.springframework.jms.listener.adapter;version="2.5.6.SEC01",
  org.springframework.osgi.context.event;version="1.2.1",
+ org.springframework.osgi.context.support;version="1.2.1",
  org.springframework.scheduling.quartz;version="2.5.6.SEC01",
  org.springframework.transaction;version="2.5.6.SEC01",
  org.springframework.util;version="2.5.6.SEC01"

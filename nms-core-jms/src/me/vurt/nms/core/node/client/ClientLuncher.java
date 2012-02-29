@@ -1,11 +1,9 @@
 package me.vurt.nms.core.node.client;
 
 import me.vurt.nms.core.ApplicationContextHolder;
-import me.vurt.nms.core.data.exception.RegisterException;
-import me.vurt.nms.core.node.AbstractNodeLuncher;
-import me.vurt.nms.core.node.util.BeanConstants;
+import me.vurt.nms.core.node.AbstractLuncher;
+import me.vurt.nms.core.node.exception.RegisterException;
 
-import org.nutz.mock.Mock.servlet;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 
@@ -13,7 +11,7 @@ import org.quartz.SchedulerException;
  * @author yanyl
  * 
  */
-public class ClientLuncher extends AbstractNodeLuncher {
+public class ClientLuncher extends AbstractLuncher {
 	
 	private Scheduler heartBeatScheduler;
 
@@ -23,12 +21,12 @@ public class ClientLuncher extends AbstractNodeLuncher {
 	 * @see me.vurt.nms.core.node.AbstractNodeLuncher#start()
 	 */
 	@Override
-	protected void start() {
+	public void start() {
 		try {
+			LOGGER.debug("[bundle:core-node]-客户端启动...");
 			RegisterHelper.register();
-
-			heartBeatScheduler = (Scheduler) ApplicationContextHolder
-					.getBean(BeanConstants.Client.HEARTBEAT_SCHEDULER);
+			
+			heartBeatScheduler = (Scheduler)ApplicationContextHolder.getBean("heartBeatScheduler");
 			try {
 				heartBeatScheduler.start();
 			} catch (SchedulerException e) {
@@ -45,7 +43,7 @@ public class ClientLuncher extends AbstractNodeLuncher {
 	 * @see me.vurt.nms.core.node.AbstractNodeLuncher#stop()
 	 */
 	@Override
-	protected void stop() {
+	public void stop() {
 		if(heartBeatScheduler!=null){
 			try {
 				heartBeatScheduler.shutdown();

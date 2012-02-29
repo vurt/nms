@@ -1,4 +1,4 @@
-package me.vurt.nms.core.data.exception;
+package me.vurt.nms.core.node.exception;
 
 /**
  * 注册异常

@@ -1,4 +1,4 @@
-package me.vurt.nms.core.node.server.exception;
+package me.vurt.nms.core.node.exception;
 
 /**
  * @author yanyl

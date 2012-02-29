@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:jms="http://www.springframework.org/schema/jms" xmlns:osgi="http://www.springframework.org/schema/osgi"
@@ -10,11 +10,6 @@
 			http://www.springframework.org/schema/osgi/spring-osgi.xsd
             http://www.springframework.org/schema/jms 
             http://www.springframework.org/schema/jms/spring-jms-2.5.xsd">
-
-	<!-- 根据节点类型引入不同的子配置文件 -->
-	<!-- ${nms.node.type}是系统属性,即程序启动时的输入的VM args:-Dnms.node.type=server|client -->
-	<import
-		resource="classpath:META-INF/inner-configs/spring-jms-${nms.node.type}.xml" />
 
 	<bean id="propertyConfigurer"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
@@ -46,27 +41,49 @@
 		<constructor-arg value="HeartBeat" />
 	</bean>
 
-	<!-- 客户端注册使用的queue -->
-	<bean id="registrationQueue" class="org.apache.activemq.command.ActiveMQQueue">
-		<constructor-arg value="Registration" />
+	<!-- 负责发送心跳信息的jmsTemplate -->
+	<bean id="heartBeatJmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory" ref="jmsFactory" />
+		<property name="deliveryPersistent" value="false" />
+		<!-- 心跳信息只存活5秒 -->
+		<property name="timeToLive" value="5000" />
+		<property name="defaultDestination" ref="heartBeatQueue" />
 	</bean>
 
-	<!-- 注册响应消息队列 -->
-	<bean id="registrationResponseQueue" class="org.apache.activemq.command.ActiveMQQueue">
-		<constructor-arg value="RegistrationResponse" />
+	<!-- 复制发送心跳信息的消息生产者 -->
+	<bean id="heartBeatMsgPrudcer" class="me.vurt.nms.core.jms.impl.MessageProducerImpl">
+		<property name="jmsTemplate" ref="heartBeatJmsTemplate" />
 	</bean>
 
-	<!-- 服务器使用的广播通道 -->
-	<bean id="nmsTopic" class="org.apache.activemq.command.ActiveMQTempTopic">
-		<constructor-arg value="NMSTopic"></constructor-arg>
+	<!-- 实现心跳的工作类 -->
+	<bean id="heartBeatJob" class="me.vurt.nms.core.node.client.HeartBeatJob">
+		<constructor-arg ref="heartBeatMsgPrudcer" />
 	</bean>
 
-	<!-- 消息监听的bean -->
-	<!-- 需要配合org.springframework.jms.listener.DefaultMessageListenerContainer和org.springframework.jms.listener.adapter.MessageListenerAdapter一起使用 -->
-	<bean id="messageListener" class="me.vurt.nms.core.jms.MessageListener"
-		scope="prototype" />
-	
-	<!-- 普通消息生产者，初始化后需要自己设置JmsTemplate -->	
-	<bean id="producer" class="me.vurt.nms.core.jms.impl.MessageProducerImpl" scope="prototype"/>
+	<!-- 心跳任务触发器 -->
+	<bean id="heartBeatTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="jobDetail">
+			<bean id="heartBeatJobBean"
+				class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="heartBeatJob" />
+				<property name="targetMethod" value="doHeartBeat" />
+			</bean>
+		</property>
+		<!-- 插件的applicationContext初始化完成之后10秒开始执行第一次心跳 -->
+		<property name="startDelay" value="10000" />
+		<!-- 心跳间隔在全局配置文件中设置 -->
+		<property name="repeatInterval" value="${client.heartBeat.repeatInterval}" />
+	</bean>
 
+	<!-- 心跳定时任务的启动器，SchedulerFactoryBean实际上是一个FactoryBean，通过id从context中获取的bean的真实类型是org.quartz.Scheduler -->
+	<bean id="heartBeatScheduler"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<!-- 初始化后不会自动开始发送心跳 -->
+		<property name="autoStartup" value="false" />
+		<property name="triggers">
+			<list>
+				<ref bean="heartBeatTrigger" />
+			</list>
+		</property>
+	</bean>
 </beans>

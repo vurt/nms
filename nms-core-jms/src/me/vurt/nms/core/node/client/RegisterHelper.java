@@ -1,32 +1,22 @@
 package me.vurt.nms.core.node.client;
 
-import java.util.Enumeration;
-
 import javax.jms.Destination;
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.Queue;
-import javax.jms.QueueBrowser;
-import javax.jms.Session;
 
-import me.vurt.nms.core.ApplicationContextHolder;
 import me.vurt.nms.core.data.DataFactory;
 import me.vurt.nms.core.data.RegisterRequest;
 import me.vurt.nms.core.data.RegisterResponse;
-import me.vurt.nms.core.data.exception.RegisterException;
 import me.vurt.nms.core.jms.JMSFactory;
 import me.vurt.nms.core.jms.MessageProducer;
 import me.vurt.nms.core.jms.exception.MessageHandleException;
 import me.vurt.nms.core.jms.exception.MessageReceiveFailedException;
 import me.vurt.nms.core.jms.exception.MessageSendFailedException;
+import me.vurt.nms.core.jms.util.DestinationConstants;
 import me.vurt.nms.core.node.Node;
-import me.vurt.nms.core.node.util.BeanConstants;
+import me.vurt.nms.core.node.exception.RegisterException;
 import me.vurt.nms.core.node.util.NodeConstants;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.jms.core.BrowserCallback;
-import org.springframework.jms.core.JmsTemplate;
 
 /**
  * @author yanyl
@@ -36,10 +26,8 @@ public class RegisterHelper {
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(RegisterHelper.class);
 
-	private static Destination registerQueue = (Destination) ApplicationContextHolder
-			.getBean(BeanConstants.REGISTRATION_QUEUE_BEAN);
-	private static Destination responseQueue = (Destination) ApplicationContextHolder
-			.getBean(BeanConstants.REGISTRATION_RESPONSE_QUEUE_BEAN);
+	private static Destination registerQueue = JMSFactory.createQueueDestination(DestinationConstants.REGISTRATION_QUEUE);
+	private static Destination responseQueue = JMSFactory.createQueueDestination(DestinationConstants.REGISTRATION_RESPONSE_QUEUE);
 
 	/**
 	 * 注册，发送注册请求，并等待注册响应，如果服务器无响应则一直重试直至响应为止

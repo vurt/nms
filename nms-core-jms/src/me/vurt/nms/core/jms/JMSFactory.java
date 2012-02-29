@@ -3,17 +3,22 @@
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
 
-import me.vurt.nms.core.ApplicationContextHolder;
-import me.vurt.nms.core.jms.exception.InvalidJMSConfigException;
+import me.vurt.nms.core.common.properties.PropertiesManager;
+import me.vurt.nms.core.exception.InvalidConfigException;
+import me.vurt.nms.core.jms.impl.MessageProducerImpl;
 import me.vurt.nms.core.jms.impl.NMSMessageListenerAdapter;
 import me.vurt.nms.core.jms.impl.StaticMessageListener;
 import me.vurt.nms.core.jms.util.MessageListenerCache;
 import me.vurt.nms.core.node.Node;
-import me.vurt.nms.core.node.util.BeanConstants;
 import me.vurt.nms.core.node.util.GlobalConfigReader;
 import me.vurt.nms.core.node.util.NodeConstants;
 import me.vurt.nms.core.node.util.PropertyNameUtil;
 
+import org.apache.activemq.ActiveMQConnectionFactory;
+import org.apache.activemq.command.ActiveMQQueue;
+import org.apache.activemq.command.ActiveMQTempTopic;
+import org.apache.activemq.pool.PooledConnectionFactory;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jms.core.JmsTemplate;
@@ -30,18 +35,47 @@ import org.springframework.util.Assert;
 public class JMSFactory {
 	public static final Logger LOGGER = LoggerFactory
 			.getLogger(JMSFactory.class);
-
+	private static PropertiesManager globalConfig=GlobalConfigReader.getPropertiesManager();
+	
+	
+	private static ConnectionFactory connectionFactory;
+	
+	/**
+	 * 获取连接到消息中间件代理的连接工厂
+	 * @return
+	 */
+	private  static final ConnectionFactory getConnectionFactory(){
+		if(connectionFactory==null){
+			String url=globalConfig.read(NodeConstants.CONFIG_BROKER_URL);
+			if(StringUtils.isEmpty(url)){
+				throw new InvalidConfigException(NodeConstants.CONFIG_BROKER_URL+"属性不能为空");
+			}
+			connectionFactory=	new PooledConnectionFactory(new ActiveMQConnectionFactory(url));
+		}
+		return connectionFactory;
+	}
+	
+	/**
+	 * 创建队列Destination
+	 * @param queue 队列名称
+	 */
+	public static Destination createQueueDestination(String queue){
+		return new ActiveMQQueue(queue);
+	}
+	
+	/**
+	 * @param topic topic名称
+	 */
+	public static Destination createTopicDestination(String topic){
+		return new ActiveMQTempTopic(topic);
+	}
+	
 	/**
 	 * 新建消息生产者实例
-	 * 
 	 * @return
 	 */
 	public static MessageProducer createProducer() {
-		MessageProducer producer = (MessageProducer) ApplicationContextHolder
-				.getBean(BeanConstants.PRODUCER_BEAN);
-		if (producer == null)
-			throw new InvalidJMSConfigException("jms producer配置错误");
-		return producer;
+		return new MessageProducerImpl();
 	}
 
 	/**
@@ -91,16 +125,6 @@ public class JMSFactory {
 			return MessageListenerCache.getMessageListener(destination);
 		}
 		return listener;
-	}
-
-	/**
-	 * 获取Spring中定义的连接工厂
-	 * 
-	 * @return
-	 */
-	public static ConnectionFactory getConnectionFactory() {
-		return (ConnectionFactory) ApplicationContextHolder
-				.getBean(BeanConstants.CONNECTION_FACTORY);
 	}
 
 	/**

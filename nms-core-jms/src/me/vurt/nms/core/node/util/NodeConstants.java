@@ -5,10 +5,19 @@ package me.vurt.nms.core.node.util;
  *
  */
 public interface NodeConstants {
+	
 	/**
 	 * NMS全局配置文件路径
 	 */
 	String CONFIG_FILE_PATH="nms-Config.properties";
+	/**
+	 * 配置属性名:消息中间件代理URL
+	 */
+	String CONFIG_BROKER_URL="mq.broker.url";
+	/**
+	 * 配置属性名:客户端心跳间隔时间
+	 */
+	String CONFIG_HEARTBEAT_REPEAT_INTERVAL="client.heartBeat.repeatInterval";
 		
 	/**
 	 * 系统属性名:节点类型，设置方式:启动时 -Dnms.node.type=client|server

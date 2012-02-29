@@ -25,6 +25,15 @@ public class GlobalConfigReader {
 	}
 	
 	/**
+	 * 读取心跳间隔时间
+	 * @return
+	 */
+	public static long getHeartBeatRepeatInterval(){
+		String interval=configManager.read(NodeConstants.CONFIG_HEARTBEAT_REPEAT_INTERVAL);
+		return Long.valueOf(interval);
+	}
+	
+	/**
 	 * 判断当前节点是不是客户端，是不是客户端是系统属性nms.node.type决定的，只有该属性值为client时认为是客户端
 	 * @return 当前节点是否客户端
 	 */

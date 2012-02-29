@@ -25,6 +25,11 @@ public class HeartBeatJob {
 		this.producer=producer;
 	}
 	
+	/**
+	 * 执行心跳的方法名
+	 */
+	public static final String HEART_BEAT_METHOD="doHeartBeat";
+	
 	public void doHeartBeat(){
 		HeartBeat heartBeat=DataFactory.createHeartBeat();
 		try {

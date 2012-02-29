@@ -1,5 +1,7 @@
 ﻿package me.vurt.nms.core;
 
+import me.vurt.nms.core.node.AbstractLuncher;
+
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.slf4j.Logger;
@@ -27,7 +29,7 @@ public class Activator implements BundleActivator {
 	 */
 	public void start(BundleContext bundleContext) throws Exception {
 		context=bundleContext;
-		LOGGER.info("nms-core is started!");
+		AbstractLuncher.INSTANCE.start();
 	}
 
 	/*
@@ -37,7 +39,7 @@ public class Activator implements BundleActivator {
 	 * org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext bundleContext) throws Exception {
-		LOGGER.info("nms-core-jms is stoped!");
+		AbstractLuncher.INSTANCE.stop();
 	}
 
 }
