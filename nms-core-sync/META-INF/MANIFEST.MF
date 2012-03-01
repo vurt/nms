@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Nms-core-sync
+Bundle-SymbolicName: nms-core-sync
+Bundle-Version: 1.0.0
+Bundle-ClassPath: .,
+ lib/commons-io-2.1.jar
+Bundle-Activator: me.vurt.nms.core.sync.Activator
+Export-Package: me.vurt.nms.core.sync,
+ me.vurt.nms.core.sync.tool
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Import-Package: me.vurt.nms.core,
+ me.vurt.nms.core.jms,
+ me.vurt.nms.core.jms.exception,
+ org.osgi.framework;version="1.3.0",
+ org.slf4j;version="1.5.6"
