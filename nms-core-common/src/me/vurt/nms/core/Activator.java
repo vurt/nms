@@ -24,36 +24,6 @@ public class Activator implements BundleActivator {
 
 	public void start(BundleContext context) throws Exception {
 		initLog();
-//		initSystemProperites();
-	}
-
-	/**
-	 * 
-	 */
-	private void initSystemProperites() {
-		File globalConfig = GlobalConfigFileReader
-				.getConfigFile("nms-config.properties");
-		
-		if(globalConfig!=null){
-			importProperitesToSystem(globalConfig);
-			System.out.println("全局配置文件读取完成");
-		}else{
-			System.err.println("全局配置文件不存在");
-		}
-	}
-	
-	/**
-	 * @param realFile
-	 */
-	private static void importProperitesToSystem(File realFile) {
-		Properties properties = new Properties();
-		try {
-			properties.load(new FileInputStream(realFile));
-			System.out.println("将配置文件"+realFile.getAbsolutePath()+"导入到系统参数中");
-		} catch (FileNotFoundException e) {
-		} catch (IOException e) {
-			//文件格式不符合properties标准
-		}
 	}
 
 	/**
