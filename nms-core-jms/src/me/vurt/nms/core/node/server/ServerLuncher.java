@@ -4,12 +4,12 @@ import java.sql.SQLException;
 
 import javax.jms.DeliveryMode;
 
-import me.vurt.nms.core.data.impl.RegisterResponseImpl;
+import me.vurt.nms.core.Luncher;
 import me.vurt.nms.core.jms.JMSFactory;
 import me.vurt.nms.core.jms.MessageListener;
 import me.vurt.nms.core.jms.impl.StaticMessageListener;
 import me.vurt.nms.core.jms.util.DestinationConstants;
-import me.vurt.nms.core.node.AbstractLuncher;
+import me.vurt.nms.core.node.data.impl.RegisterResponseImpl;
 import me.vurt.nms.core.node.server.dao.DAOUtil;
 import me.vurt.nms.core.node.server.dao.TNode;
 import me.vurt.nms.core.node.server.handler.HeartBeatHandler;
@@ -24,7 +24,7 @@ import org.h2.tools.Server;
  * @author yanyl
  * 
  */
-public class ServerLuncher extends AbstractLuncher {
+public class ServerLuncher implements Luncher {
 	private MessageListener heartBeatListener;
 	private MessageListener registrationListener;
 	private Server h2Server;

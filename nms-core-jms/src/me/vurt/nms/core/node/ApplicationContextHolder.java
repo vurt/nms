@@ -1,4 +1,5 @@
-package me.vurt.nms.core;
+package me.vurt.nms.core.node;
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -6,7 +7,6 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanNotOfRequiredTypeException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.osgi.context.support.OsgiBundleXmlApplicationContext;
 
 /**

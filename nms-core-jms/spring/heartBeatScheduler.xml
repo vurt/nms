@@ -21,9 +21,6 @@
 		</property>
 	</bean>
 
-	<!-- 保存Bundle内部的applicationContext，方便在代码中获取 -->
-	<bean id="applicationContext" class="me.vurt.nms.core.ApplicationContextHolder" />
-
 	<!-- a pooling based JMS provider -->
 	<bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
 		<property name="brokerURL">

@@ -3,9 +3,9 @@ package me.vurt.nms.core.node.server.handler;
 import java.util.HashMap;
 import java.util.Map;
 
-import me.vurt.nms.core.data.RegisterRequest;
 import me.vurt.nms.core.jms.MessageHandler;
 import me.vurt.nms.core.node.Node;
+import me.vurt.nms.core.node.data.RegisterRequest;
 import me.vurt.nms.core.node.exception.BadRequestException;
 import me.vurt.nms.core.node.exception.NodeAlreadyExistException;
 import me.vurt.nms.core.node.server.dao.DAOUtil;

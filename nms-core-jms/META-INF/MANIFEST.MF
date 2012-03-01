@@ -1,18 +1,20 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: nms-core-jms
-Bundle-SymbolicName: nms-core-jms
+Bundle-SymbolicName: nms-core-node
 Bundle-Version: 1.0.0
-Bundle-Activator: me.vurt.nms.core.Activator
 Import-Package: javax.jms;version="1.1.0",
  javax.naming,
  javax.net,
  javax.transaction.xa,
+ me.vurt.nms.core,
  me.vurt.nms.core.common.io,
  me.vurt.nms.core.common.properties,
  me.vurt.nms.core.common.tools,
+ me.vurt.nms.core.data,
+ me.vurt.nms.core.exception,
  org.apache.commons.lang,
- org.apache.log4j;version="1.2.16",
+ org.apache.log4j;version="1.2.15",
  org.osgi.framework;version="1.6.0",
  org.quartz;version="1.6.2",
  org.quartz.simpl;version="1.6.2",
@@ -40,5 +42,7 @@ Bundle-ClassPath: .,
  lib/commons-dbcp-1.4.jar,
  lib/activemq-pool-5.5.1.jar,
  lib/commons-pool-1.5.4.jar
-Export-Package: me.vurt.nms.core.data,
- me.vurt.nms.core.jms
+Export-Package: me.vurt.nms.core.jms,
+ me.vurt.nms.core.jms.exception,
+ me.vurt.nms.core.node
+Bundle-Activator: me.vurt.nms.core.node.Activator

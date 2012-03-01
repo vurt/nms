@@ -2,9 +2,9 @@ package me.vurt.nms.core.jms.impl;
 
 import java.util.Collection;
 
-import me.vurt.nms.core.Activator;
 import me.vurt.nms.core.jms.MessageHandler;
 import me.vurt.nms.core.jms.MessageListener;
+import me.vurt.nms.core.node.Activator;
 
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;

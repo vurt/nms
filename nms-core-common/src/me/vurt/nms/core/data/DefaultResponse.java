@@ -1,9 +1,7 @@
-package me.vurt.nms.core.data.impl;
+package me.vurt.nms.core.data;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import me.vurt.nms.core.data.Response;
 
 /**
  * @author yanyl
@@ -54,7 +52,6 @@ public class DefaultResponse implements Response {
 	/* (non-Javadoc)
 	 * @see me.vurt.nms.core.data.Response#addResponses(java.util.Map)
 	 */
-	@Override
 	public void addResponses(Map<String, Object> responses) {
 		this.responses.putAll(responses);
 	}

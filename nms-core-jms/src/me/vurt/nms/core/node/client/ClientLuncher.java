@@ -1,7 +1,7 @@
 package me.vurt.nms.core.node.client;
 
-import me.vurt.nms.core.ApplicationContextHolder;
-import me.vurt.nms.core.node.AbstractLuncher;
+import me.vurt.nms.core.Luncher;
+import me.vurt.nms.core.node.ApplicationContextHolder;
 import me.vurt.nms.core.node.exception.RegisterException;
 
 import org.quartz.Scheduler;
@@ -11,7 +11,7 @@ import org.quartz.SchedulerException;
  * @author yanyl
  * 
  */
-public class ClientLuncher extends AbstractLuncher {
+public class ClientLuncher implements Luncher {
 	
 	private Scheduler heartBeatScheduler;
 

@@ -1,6 +1,7 @@
-package me.vurt.nms.core.data.impl;
+package me.vurt.nms.core.node.data.impl;
 
-import me.vurt.nms.core.data.RegisterResponse;
+import me.vurt.nms.core.data.DefaultResponse;
+import me.vurt.nms.core.node.data.RegisterResponse;
 
 /**
  * @author yanyl

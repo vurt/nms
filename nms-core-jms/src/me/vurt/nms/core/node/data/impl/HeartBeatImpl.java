@@ -1,10 +1,10 @@
-package me.vurt.nms.core.data.impl;
+package me.vurt.nms.core.node.data.impl;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import me.vurt.nms.core.data.HeartBeat;
 import me.vurt.nms.core.node.Node;
+import me.vurt.nms.core.node.data.HeartBeat;
 
 /**
  * 

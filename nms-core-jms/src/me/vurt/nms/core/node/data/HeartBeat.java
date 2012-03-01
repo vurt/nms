@@ -1,6 +1,8 @@
-package me.vurt.nms.core.data;
+package me.vurt.nms.core.node.data;
 
 import java.util.Map;
+
+import me.vurt.nms.core.data.Data;
 
 /**
  * 心跳信息接口

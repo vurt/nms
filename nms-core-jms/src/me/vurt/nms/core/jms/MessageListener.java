@@ -10,8 +10,8 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageProducer;
 
+import me.vurt.nms.core.data.DefaultResponse;
 import me.vurt.nms.core.data.Response;
-import me.vurt.nms.core.data.impl.DefaultResponse;
 import me.vurt.nms.core.jms.util.MessageListenerCache;
 import me.vurt.nms.core.node.util.NodeConstants;
 import me.vurt.nms.core.node.util.PropertyNameUtil;

@@ -2,8 +2,6 @@ package me.vurt.nms.core.data;
 
 import java.util.Map;
 
-import me.vurt.nms.core.jms.MessageHandler;
-
 /**
  * 响应消息
  * @author yanyl

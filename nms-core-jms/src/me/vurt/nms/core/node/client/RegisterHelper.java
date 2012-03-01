@@ -2,9 +2,6 @@ package me.vurt.nms.core.node.client;
 
 import javax.jms.Destination;
 
-import me.vurt.nms.core.data.DataFactory;
-import me.vurt.nms.core.data.RegisterRequest;
-import me.vurt.nms.core.data.RegisterResponse;
 import me.vurt.nms.core.jms.JMSFactory;
 import me.vurt.nms.core.jms.MessageProducer;
 import me.vurt.nms.core.jms.exception.MessageHandleException;
@@ -12,6 +9,9 @@ import me.vurt.nms.core.jms.exception.MessageReceiveFailedException;
 import me.vurt.nms.core.jms.exception.MessageSendFailedException;
 import me.vurt.nms.core.jms.util.DestinationConstants;
 import me.vurt.nms.core.node.Node;
+import me.vurt.nms.core.node.data.DataFactory;
+import me.vurt.nms.core.node.data.RegisterRequest;
+import me.vurt.nms.core.node.data.RegisterResponse;
 import me.vurt.nms.core.node.exception.RegisterException;
 import me.vurt.nms.core.node.util.NodeConstants;
 

@@ -1,15 +1,18 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Node manage system common tools
-Bundle-SymbolicName: nms-core-common
+Bundle-SymbolicName: nms-core
 Bundle-Version: 1.0.0
-Bundle-Activator: me.vurt.nms.core.common.Activator
+Bundle-Activator: me.vurt.nms.core.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ClassPath: .,
  lib/commons-lang-2.5.jar
-Export-Package: me.vurt.nms.core.common.io,
+Export-Package: me.vurt.nms.core,
+ me.vurt.nms.core.common.io,
  me.vurt.nms.core.common.properties,
  me.vurt.nms.core.common.tools;uses:="org.slf4j",
+ me.vurt.nms.core.data,
+ me.vurt.nms.core.exception,
  org.apache.commons.lang
 Bundle-ActivationPolicy: lazy
 Import-Package: org.apache.log4j;version="1.2.15",
