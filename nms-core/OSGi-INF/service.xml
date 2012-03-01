@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="nms-core">
+   <implementation class="me.vurt.nms.core.CoreServiceProvider"/>
+   <service>
+      <provide interface="me.vurt.nms.core.Started"/>
+      <provide interface="me.vurt.nms.core.CoreService"/>"/>
+   </service>
+</scr:component>

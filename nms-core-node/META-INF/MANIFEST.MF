@@ -46,3 +46,4 @@ Export-Package: me.vurt.nms.core.jms,
  me.vurt.nms.core.jms.exception,
  me.vurt.nms.core.node
 Bundle-Activator: me.vurt.nms.core.node.Activator
+Service-Component: OSGI-INF/*.xml

@@ -1,25 +1,22 @@
-package me.vurt.nms.core;
+package me.vurt.nms.core.common.tools;
 
+import me.vurt.nms.core.Constants;
 import me.vurt.nms.core.common.properties.PropertiesManager;
-import me.vurt.nms.core.common.tools.GlobalConfigFileReader;
 
-/**
- * 配置的读取类
- * @author Vurt
- *
- */
-public class ConfigReader {
+public class ConfigReader{
+	
 	private static PropertiesManager configManager=new PropertiesManager(GlobalConfigFileReader.getConfigFile(Constants.CONFIG_FILE_PATH).toURI());
 	
 	/**
 	 * 获取客户端节点的属性文件管理器
 	 * @return
 	 */
-	public static PropertiesManager getPropertiesManager(){
+	public static PropertiesManager getConfigFileManager(){
 		return configManager;
 	}
 	
-	public static boolean debugMode(){
+	
+	public static  boolean debugMode(){
 		String debug=configManager.read(Constants.CONFIG_DEBUG_MODE);
 		return Boolean.valueOf(debug);
 	}
@@ -41,4 +38,14 @@ public class ConfigReader {
 		String type=System.getProperty(Constants.SYS_PROPERTY_NODE_TYPE);
 		return Constants.NODE_TYPE_CLIENT.equals(type);
 	}
+
+	/**
+	 * 读取配置项
+	 * @param proeprtyName 配置属性名称
+	 * @return 属性值，没有改属性则返回null
+	 */
+	public static String getConfig(String proeprtyName) {
+		return configManager.read(proeprtyName);
+	}
+
 }

@@ -1,5 +1,7 @@
 package me.vurt.nms.core;
 
+import me.vurt.nms.core.common.tools.ConfigReader;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,23 +30,44 @@ public abstract class LuncherAdapter implements Luncher {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * @return 服务器启动器的实现类
 	 */
-	protected abstract Class<? extends Luncher> getServerLuncherType() ;
-	
+	protected abstract Class<? extends Luncher> getServerLuncherType();
+
 	/**
 	 * @return 客户端启动器的实现类
 	 */
-	protected abstract Class<? extends Luncher> getClientLuncherType() ;
-	
-	@Override
+	protected abstract Class<? extends Luncher> getClientLuncherType();
+
+	private StartFlag flag;
+
+	public synchronized void setStartFlag(StartFlag startFlag) {
+		if (flag != startFlag) {
+			restart();
+		} else {
+			this.flag = startFlag;
+			start();
+		}
+	}
+
+	public synchronized void unsetStartFlag(StartFlag startFlag) {
+		if (flag != startFlag) {
+			stop();
+			this.flag = null;
+		}
+	}
+
+	public void restart() {
+		luncher.stop();
+		luncher.start();
+	}
+
 	public void start() {
 		luncher.start();
 	}
-	
-	@Override
+
 	public void stop() {
 		luncher.stop();
 	}

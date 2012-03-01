@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="nms-core-node">
+   <implementation class="me.vurt.nms.core.node.NodeLuncher"/>
+   <reference bind="setStartFlag" cardinality="1..1" interface="me.vurt.nms.core.StartFlag" name="Started" policy="dynamic" unbind="unsetStartFlag"/>
+   <service>
+      <provide interface="me.vurt.nms.core.node.NodeStartFlag"/>
+   </service>
+</scr:component>
