@@ -5,13 +5,13 @@ import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Message;
 
+import me.vurt.nms.core.common.tools.ConfigReader;
 import me.vurt.nms.core.data.Response;
 import me.vurt.nms.core.jms.JMSFactory;
 import me.vurt.nms.core.jms.MessageProducer;
 import me.vurt.nms.core.jms.exception.MessageReceiveFailedException;
 import me.vurt.nms.core.jms.exception.MessageSendFailedException;
 import me.vurt.nms.core.node.Node;
-import me.vurt.nms.core.node.util.GlobalConfigReader;
 import me.vurt.nms.core.node.util.NodeConstants;
 import me.vurt.nms.core.node.util.PropertyNameUtil;
 
@@ -143,7 +143,6 @@ public class MessageProducerImpl implements MessageProducer {
 	private JmsTemplate getJmsTemplate(){
 		if(jmsTemplate==null){
 			jmsTemplate=JMSFactory.createJmsTemplate();
-			jmsTemplate.setExplicitQosEnabled(true);
 		}
 		return jmsTemplate;
 	}
@@ -158,7 +157,7 @@ public class MessageProducerImpl implements MessageProducer {
 		@Override
 		public Message postProcessMessage(Message message) throws JMSException {
 			// 只有客户端发送消息前需要添加额外信息
-			if (!GlobalConfigReader.isClient()) {
+			if (!ConfigReader.isClient()) {
 				return message;
 			}
 			message.setStringProperty(PropertyNameUtil

@@ -11,7 +11,7 @@ import me.vurt.nms.core.node.server.ServerLuncher;
  * @author yanyl
  * 
  */
-public class NodeLuncher extends LuncherAdapter implements NodeStartFlag{
+public class NodeLuncher extends LuncherAdapter{
 	/* (non-Javadoc)
 	 * @see me.vurt.nms.core.LuncherAdapter#getServerLuncherType()
 	 */

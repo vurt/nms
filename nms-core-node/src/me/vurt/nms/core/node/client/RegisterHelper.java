@@ -4,10 +4,10 @@ import javax.jms.Destination;
 
 import me.vurt.nms.core.jms.JMSFactory;
 import me.vurt.nms.core.jms.MessageProducer;
-import me.vurt.nms.core.jms.exception.MessageHandleException;
 import me.vurt.nms.core.jms.exception.MessageReceiveFailedException;
 import me.vurt.nms.core.jms.exception.MessageSendFailedException;
 import me.vurt.nms.core.jms.util.DestinationConstants;
+import me.vurt.nms.core.node.Client;
 import me.vurt.nms.core.node.Node;
 import me.vurt.nms.core.node.data.DataFactory;
 import me.vurt.nms.core.node.data.RegisterRequest;
@@ -32,7 +32,7 @@ public class RegisterHelper {
 	/**
 	 * 注册，发送注册请求，并等待注册响应，如果服务器无响应则一直重试直至响应为止
 	 * 
-	 * @throws MessageHandleException
+	 * @throws MessageConvertException
 	 *             如果无法完成注册
 	 */
 	public static void register() throws RegisterException {
@@ -67,7 +67,7 @@ public class RegisterHelper {
 				} else {
 					LOGGER.info("连接成功");
 					// 每次连接都会返回一个Key
-					((ClientNode) Node.CURRENT).setKey(response.getResponse(
+					((Client) Node.CURRENT).setKey(response.getResponse(
 							NodeConstants.RESPONSE_NODE_KEY).toString());
 				}
 			}

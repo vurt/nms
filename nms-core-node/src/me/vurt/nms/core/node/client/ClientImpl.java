@@ -1,9 +1,11 @@
 package me.vurt.nms.core.node.client;
 
 import me.vurt.nms.core.common.properties.PropertiesManager;
+import me.vurt.nms.core.common.tools.ConfigReader;
 import me.vurt.nms.core.common.tools.IPParser;
+import me.vurt.nms.core.node.Client;
 import me.vurt.nms.core.node.Node;
-import me.vurt.nms.core.node.util.GlobalConfigReader;
+import me.vurt.nms.core.node.exception.InvalidNodeTypeException;
 import me.vurt.nms.core.node.util.NodeConstants;
 
 /**
@@ -11,8 +13,24 @@ import me.vurt.nms.core.node.util.NodeConstants;
  * @author yanyl
  *
  */
-public class ClientNode implements Node{
-	private static PropertiesManager configManager=GlobalConfigReader.getPropertiesManager();
+public class ClientImpl implements Client{
+	private static PropertiesManager configManager=ConfigReader.getConfigFileManager();
+	
+	private static Client instance;
+	
+	public static Client getInstance(){
+		if(!ConfigReader.isClient()){
+			throw new InvalidNodeTypeException("服务器节点不能获取客户端实例");
+		}
+		if(instance==null){
+			instance=new ClientImpl();
+		}
+		return instance;
+	}
+	
+	private ClientImpl(){
+		
+	}
 	
 	/**
 	 * 获取当前机器的外网IP

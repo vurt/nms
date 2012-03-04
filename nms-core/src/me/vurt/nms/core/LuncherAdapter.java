@@ -41,24 +41,6 @@ public abstract class LuncherAdapter implements Luncher {
 	 */
 	protected abstract Class<? extends Luncher> getClientLuncherType();
 
-	private StartFlag flag;
-
-	public synchronized void setStartFlag(StartFlag startFlag) {
-		if (flag != startFlag) {
-			restart();
-		} else {
-			this.flag = startFlag;
-			start();
-		}
-	}
-
-	public synchronized void unsetStartFlag(StartFlag startFlag) {
-		if (flag != startFlag) {
-			stop();
-			this.flag = null;
-		}
-	}
-
 	public void restart() {
 		luncher.stop();
 		luncher.start();

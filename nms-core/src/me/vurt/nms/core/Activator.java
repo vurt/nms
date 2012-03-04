@@ -12,6 +12,8 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.PropertyConfigurator;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Activator implements BundleActivator {
 
@@ -24,8 +26,8 @@ public class Activator implements BundleActivator {
 	public void start(BundleContext bundleContext) throws Exception {
 		context=bundleContext;
 		initLog();
-		//新建StartFlag的实例便可激活服务
-		new CoreServiceProvider();
+		Logger logger=LoggerFactory.getLogger(Activator.class);
+		logger.debug(bundleContext.getBundle().getSymbolicName()+"已启动");
 	}
 
 	private void initLog() throws IOException {

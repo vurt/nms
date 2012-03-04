@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import javax.jms.DeliveryMode;
 
 import me.vurt.nms.core.Luncher;
+import me.vurt.nms.core.common.tools.ConfigReader;
 import me.vurt.nms.core.jms.JMSFactory;
 import me.vurt.nms.core.jms.MessageListener;
 import me.vurt.nms.core.jms.impl.StaticMessageListener;
@@ -14,7 +15,6 @@ import me.vurt.nms.core.node.server.dao.DAOUtil;
 import me.vurt.nms.core.node.server.dao.TNode;
 import me.vurt.nms.core.node.server.handler.HeartBeatHandler;
 import me.vurt.nms.core.node.server.handler.RegistrationHandler;
-import me.vurt.nms.core.node.util.GlobalConfigReader;
 
 import org.h2.tools.Server;
 
@@ -37,7 +37,7 @@ public class ServerLuncher implements Luncher {
 	@Override
 	public void start() {
 		LOGGER.debug("[bundle:core-node]-服务端启动");
-		if (GlobalConfigReader.debugMode()) {
+		if (ConfigReader.debugMode()) {
 			try {
 				h2Server = Server.createWebServer().start();
 				DAOUtil.getServerDao().create(TNode.class, false);

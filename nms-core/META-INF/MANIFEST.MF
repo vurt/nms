@@ -23,4 +23,3 @@ Import-Package: org.apache.log4j;version="1.2.15",
  org.springframework.beans.factory.xml;version="2.5.6.SEC01",
  org.springframework.core.io;version="2.5.6.SEC01",
  org.springframework.util.xml;version="2.5.6.SEC01"
-Service-Component: OSGI-INF/*.xml

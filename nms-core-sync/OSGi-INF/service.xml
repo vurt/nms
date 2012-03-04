@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="nms-core-sync">
-   <implementation class="me.vurt.nms.core.sync.SyncLuncher"/>
-   <reference cardinality="1..1" interface="me.vurt.nms.core.node.NodeStartFlag" name="NodeStartFlag" policy="static"/>
-</scr:component>
