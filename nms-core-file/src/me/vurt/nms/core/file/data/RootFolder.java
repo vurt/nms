@@ -1,6 +1,7 @@
 package me.vurt.nms.core.file.data;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.Map;
 
 import me.vurt.nms.core.data.Data;
@@ -42,6 +43,7 @@ public class RootFolder implements Data{
 	public RootFolder(File rootFolder, String name) {
 		this.absolutePath = rootFolder.getAbsolutePath();
 		this.name = name;
+		this.fileContents=new HashMap<String, String>();
 	}
 
 	/**
