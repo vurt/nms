@@ -3,6 +3,7 @@ package me.vurt.nms.core.file;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -64,5 +65,5 @@ public interface NFile {
 	 * @param is
 	 *            读取文件内容的输入流
 	 */
-	void writeFile(InputStream is);
+	void writeFile(InputStream is) throws IOException;
 }

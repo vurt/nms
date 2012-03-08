@@ -9,6 +9,7 @@ import java.util.Map;
 
 import me.vurt.nms.core.file.data.RootFolder;
 import me.vurt.nms.core.file.exception.InvalidRootFolderException;
+import me.vurt.nms.core.node.Node;
 
 import org.apache.commons.io.FileUtils;
 
@@ -20,10 +21,11 @@ import org.apache.commons.io.FileUtils;
  *     如果是客户端，那么这些根目录都应该在同一个目录中，把这个目录叫做<I>SuperRoot</I>吧，
  * 所有客户端根目录下的文件在服务端都是可读写的
  *     如果是服务端，则没有要在同一目录中的限制
+ *     文件系统中所有文件信息都不会持久化，实时按需创建，根据自己的需要再开始计算文件内容
  * </PRE>
  * 
  * @author Vurt
- * 
+ * @see RootFolder
  */
 public class NMSFileSystem {
 	private static Map<String, RootFolder> rootFolderMap = new HashMap<String, RootFolder>();
@@ -66,18 +68,20 @@ public class NMSFileSystem {
 				return rootFolderMap.get(name);
 			}
 		}
-		RootFolder folder = new RootFolder(rootFolder, name);
+		RootFolder folder = new RootFolder(Node.CURRENT.getId(), rootFolder,
+				name);
 		rootFolderMap.put(name, folder);
 		return folder;
 	}
-	
+
 	/**
 	 * 获取当前节点的所有根目录
+	 * 
 	 * @return 只读的根目录集合
 	 */
-	public Collection<RootFolder> getRootFolders(){
-		//TODO：根目录内容也要只读
-		//TODO：排序
+	public Collection<RootFolder> getRootFolders() {
+		// TODO：根目录内容也要只读
+		// TODO：排序
 		return Collections.unmodifiableCollection(rootFolderMap.values());
 	}
 }
