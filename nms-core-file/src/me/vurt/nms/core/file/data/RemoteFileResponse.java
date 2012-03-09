@@ -2,7 +2,7 @@ package me.vurt.nms.core.file.data;
 
 import java.io.InputStream;
 
-public interface ReadResponse {
+public interface RemoteFileResponse {
 	
 	/**
 	 * 读取文件流

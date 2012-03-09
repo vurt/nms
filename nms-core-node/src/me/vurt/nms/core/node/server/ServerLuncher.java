@@ -8,7 +8,7 @@ import me.vurt.nms.core.Luncher;
 import me.vurt.nms.core.common.tools.ConfigReader;
 import me.vurt.nms.core.jms.JMSFactory;
 import me.vurt.nms.core.jms.MessageListener;
-import me.vurt.nms.core.jms.impl.StaticMessageListener;
+import me.vurt.nms.core.jms.StaticMessageListener;
 import me.vurt.nms.core.jms.util.DestinationConstants;
 import me.vurt.nms.core.node.data.impl.RegisterResponseImpl;
 import me.vurt.nms.core.node.server.dao.DAOUtil;

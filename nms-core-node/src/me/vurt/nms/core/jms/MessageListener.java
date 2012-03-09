@@ -163,12 +163,29 @@ public abstract class MessageListener {
 	 */
 	public static final String MESSAGE_HANDLE_MOTHED_NAME = "messageReceived";
 
-	public Object messageReceived(Object msg) {
+	public final Object messageReceived(Object msg) {
 		LOGGER.debug("Received one msg:" + msg.toString());
 		if (handlers.size() == 0) {
 			LOGGER.warn("没有设置任何处理器");
 		}
 		Response response = createResponse();
+		doMessageReceived(msg, response);
+		if (!response.isEmpty()) {
+			return response;
+		}
+		// TODO:怎么样将响应消息以非持久化的方式发送
+		return null;
+	}
+
+	/**
+	 * 处理收到的消息，并构造响应
+	 * 
+	 * @param msg
+	 *            消息
+	 * @param response
+	 *            响应
+	 */
+	protected void doMessageReceived(Object msg, Response response) {
 		for (MessageHandler handler : getValidHandlers()) {
 			try {
 				Map<String, Object> result = handler.handle(msg);
@@ -180,11 +197,6 @@ public abstract class MessageListener {
 				response.addError(handler.getId(), e.getMessage());
 			}
 		}
-		if (!response.isEmpty()) {
-			return response;
-		}
-		// TODO:怎么样将响应消息以非持久化的方式发送
-		return null;
 	}
 
 	/**

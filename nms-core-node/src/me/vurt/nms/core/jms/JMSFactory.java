@@ -9,7 +9,6 @@ import me.vurt.nms.core.common.tools.ConfigReader;
 import me.vurt.nms.core.exception.InvalidConfigException;
 import me.vurt.nms.core.jms.impl.MessageProducerImpl;
 import me.vurt.nms.core.jms.impl.NMSMessageListenerAdapter;
-import me.vurt.nms.core.jms.impl.StaticMessageListener;
 import me.vurt.nms.core.jms.util.FileMessageConverter;
 import me.vurt.nms.core.jms.util.MessageListenerCache;
 import me.vurt.nms.core.node.Node;

@@ -1,9 +1,7 @@
-package me.vurt.nms.core.jms.impl;
+package me.vurt.nms.core.jms;
 
 import java.util.Collection;
 
-import me.vurt.nms.core.jms.MessageHandler;
-import me.vurt.nms.core.jms.MessageListener;
 import me.vurt.nms.core.node.Activator;
 
 import org.osgi.framework.InvalidSyntaxException;

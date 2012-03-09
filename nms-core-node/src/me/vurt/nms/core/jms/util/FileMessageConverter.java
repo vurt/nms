@@ -8,6 +8,9 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
 
+import me.vurt.nms.core.jms.data.BlobResponse;
+import me.vurt.nms.core.jms.data.DefaultBlobResponse;
+
 import org.apache.activemq.ActiveMQSession;
 import org.apache.activemq.BlobMessage;
 import org.springframework.jms.support.converter.MessageConversionException;
@@ -32,6 +35,8 @@ public class FileMessageConverter extends SimpleMessageConverter {
 			throws JMSException, MessageConversionException {
 		if (object instanceof File) {
 			return createMessageForFile((File) object, session);
+		} else if (object instanceof InputStream) {
+			return createMessageForInputStream((InputStream) object, session);
 		} else {
 			return super.toMessage(object, session);
 		}
@@ -47,30 +52,52 @@ public class FileMessageConverter extends SimpleMessageConverter {
 		}
 	}
 
+	/**
+	 * 将要发送的文件转成{@link BlobMessage}
+	 * @param file 要发送的文件
+	 * @param session
+	 * @return
+	 * @throws JMSException
+	 */
 	protected Message createMessageForFile(File file, Session session)
 			throws JMSException {
 		if (session instanceof ActiveMQSession) {
 			ActiveMQSession mqSession = (ActiveMQSession) session;
 			return mqSession.createBlobMessage(file);
 		} else {
-			throw new MessageConversionException("错误的Session类型，只支持通过ActiveMQSession发送文件");
+			throw new MessageConversionException(
+					"错误的Session类型，只支持通过ActiveMQSession发送文件");
 		}
 	}
 
-	protected Message createMessageForInputStream(InputStream is, Session session)
-			throws JMSException {
+	/**
+	 * 将要发送的流转换成{@link BlobMessage}
+	 * 
+	 * @param is 输入流
+	 * @param session
+	 * @return {@link BlobMessage}
+	 * @throws JMSException
+	 */
+	protected Message createMessageForInputStream(InputStream is,
+			Session session) throws JMSException {
 		if (session instanceof ActiveMQSession) {
 			ActiveMQSession mqSession = (ActiveMQSession) session;
 			return mqSession.createBlobMessage(is);
 		} else {
-			throw new MessageConversionException("错误的Session类型，只支持通过ActiveMQSession发送文件");
+			throw new MessageConversionException(
+					"错误的Session类型，只支持通过ActiveMQSession发送文件");
 		}
 	}
 
+	/**
+	 * 将接收到的BlobMessage转换为BlobResponse
+	 */
 	protected Object extractFileFromMessage(BlobMessage message)
 			throws JMSException {
 		try {
-			return message.getInputStream();
+			BlobResponse response = new DefaultBlobResponse();
+			response.setInputStream(message.getInputStream());
+			return response;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -1,9 +1,7 @@
-package me.vurt.nms.core.jms.impl;
+package me.vurt.nms.core.jms;
 
 import java.util.Collection;
 
-import me.vurt.nms.core.jms.MessageHandler;
-import me.vurt.nms.core.jms.MessageListener;
 
 /**
  * 消息处理器为静态(手动添加)的消息监听器

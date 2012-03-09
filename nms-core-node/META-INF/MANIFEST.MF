@@ -44,6 +44,7 @@ Bundle-ClassPath: .,
  lib/activemq-pool-5.5.1.jar,
  lib/commons-pool-1.5.4.jar
 Export-Package: me.vurt.nms.core.jms,
+ me.vurt.nms.core.jms.data,
  me.vurt.nms.core.jms.exception,
  me.vurt.nms.core.node
 Bundle-Activator: me.vurt.nms.core.node.Activator
