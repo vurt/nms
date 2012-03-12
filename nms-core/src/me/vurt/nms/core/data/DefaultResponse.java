@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 响应接口的默认实现
  * @author yanyl
  * 
  */
@@ -72,5 +73,13 @@ public class DefaultResponse implements Response {
 	@Override
 	public Object getResponse(String key) {
 		return responses.get(key);
+	}
+
+	/* (non-Javadoc)
+	 * @see me.vurt.nms.core.data.Response#addResponse(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public void addResponse(String key, Object value) {
+		responses.put(key, value);
 	}
 }

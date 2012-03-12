@@ -34,6 +34,13 @@ public interface Response extends Data{
 	void addResponses(Map<String, Object> responses);
 	
 	/**
+	 * 添加单条响应
+	 * @param key 单条响应结果的Key，任何字符串皆可，如果多个处理器返回相同key的响应，则只有一条会被发送回请求端
+	 * @param value 响应数据
+	 */
+	void addResponse(String key,Object value);
+	
+	/**
 	 * 获取所有响应数据
 	 * @return 响应数据Map
 	 */
