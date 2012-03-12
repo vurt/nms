@@ -13,7 +13,7 @@ import me.vurt.nms.core.node.server.dao.NodeFactory;
 import me.vurt.nms.core.node.server.dao.NodeService;
 import me.vurt.nms.core.node.util.NodeConstants;
 
-public class RegistrationHandler implements MessageHandler {
+public class RegistrationHandler implements MessageHandler<RegisterRequest> {
 
 	@Override
 	public String getId() {
@@ -21,7 +21,7 @@ public class RegistrationHandler implements MessageHandler {
 	}
 
 	@Override
-	public Map<String, Object> handle(Object msg)
+	public Map<String, Object> handle(RegisterRequest msg)
 			throws NodeAlreadyExistException, BadRequestException {
 		if (!(msg instanceof RegisterRequest)) {
 			throw new BadRequestException("错误的注册请求类型："
@@ -48,6 +48,14 @@ public class RegistrationHandler implements MessageHandler {
 		Map<String, Object> response = new HashMap<String, Object>();
 		response.put(NodeConstants.RESPONSE_NODE_KEY, node.getKey());
 		return response;
+	}
+
+	/* (non-Javadoc)
+	 * @see me.vurt.nms.core.jms.MessageHandler#getMessageType()
+	 */
+	@Override
+	public Class<RegisterRequest> getMessageType() {
+		return RegisterRequest.class;
 	}
 
 }

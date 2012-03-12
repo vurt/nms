@@ -204,7 +204,7 @@ public class JMSFactory {
 		listenerContainer.setDestination(destination);
 		initMessageSelector(listenerContainer);
 
-		MessageListener listener = new StaticMessageListener();
+		MessageListener listener = new MessageListener();
 		listener.setDestination(destination);
 
 		MessageListenerAdapter adapter = new NMSMessageListenerAdapter(listener);

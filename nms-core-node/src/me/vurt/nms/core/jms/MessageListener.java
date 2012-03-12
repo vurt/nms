@@ -1,5 +1,6 @@
 ﻿package me.vurt.nms.core.jms;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -22,13 +23,14 @@ import org.slf4j.LoggerFactory;
 
 /**
  * 异步消息监听器的实现类，可以添加具体的处理实例，启动和关闭监听<BR>
+ * 接收到消息后会分发给类型匹配的处理器进行处理<BR>
  * 消息的响应对象默认使用{@link DefaultResponse}，可以通过
  * {@link MessageListener#setResponseType(Class)}修改
  * 
  * @author yanyl
  * 
  */
-public abstract class MessageListener {
+public class MessageListener {
 	protected static final Logger LOGGER = LoggerFactory
 			.getLogger(MessageListener.class);
 
@@ -42,6 +44,13 @@ public abstract class MessageListener {
 	public MessageListener() {
 		addCounter();
 		index = counter;
+	}
+	
+	/**
+	 * @return  监听器序号
+	 */
+	public int getIndex(){
+		return index;
 	}
 
 	/**
@@ -128,14 +137,14 @@ public abstract class MessageListener {
 	/**
 	 * 消息处理器Map，Key是处理器id，Value是处理器实例
 	 */
-	protected Map<String, MessageHandler> handlers = new LinkedHashMap<String, MessageHandler>();
+	protected Map<String, MessageHandler<?>> handlers = new LinkedHashMap<String, MessageHandler<?>>();
 
 	/**
 	 * 添加处理器
 	 * 
 	 * @param handler
 	 */
-	protected void addMessageHandler(MessageHandler handler) {
+	public void addMessageHandler(MessageHandler<?> handler) {
 		handlers.put(handler.getId(), handler);
 	}
 
@@ -145,7 +154,7 @@ public abstract class MessageListener {
 	 * @param id
 	 *            处理器id
 	 */
-	protected void removeHandler(String id) {
+	public void removeHandler(String id) {
 		if (handlers.containsKey(id)) {
 			handlers.remove(id);
 		}
@@ -156,7 +165,16 @@ public abstract class MessageListener {
 	 * 
 	 * @return
 	 */
-	protected abstract Collection<MessageHandler> getValidHandlers();
+	@SuppressWarnings("rawtypes")
+	protected Collection<MessageHandler> getValidHandlers(Object object) {
+		Collection<MessageHandler> matchHandlders=new ArrayList<MessageHandler>();
+		for(MessageHandler handler:handlers.values()){
+			if(handler.getMessageType().isInstance(object)){
+				matchHandlders.add(handler);
+			}
+		}
+		return matchHandlders;
+	}
 
 	/**
 	 * 消息处理方法的方法名
@@ -185,8 +203,9 @@ public abstract class MessageListener {
 	 * @param response
 	 *            响应
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected void doMessageReceived(Object msg, Response response) {
-		for (MessageHandler handler : getValidHandlers()) {
+		for (MessageHandler handler : getValidHandlers(msg)) {
 			try {
 				Map<String, Object> result = handler.handle(msg);
 				if (result != null) {

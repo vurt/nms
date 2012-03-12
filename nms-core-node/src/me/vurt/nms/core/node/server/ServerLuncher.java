@@ -8,7 +8,6 @@ import me.vurt.nms.core.Luncher;
 import me.vurt.nms.core.common.tools.ConfigReader;
 import me.vurt.nms.core.jms.JMSFactory;
 import me.vurt.nms.core.jms.MessageListener;
-import me.vurt.nms.core.jms.StaticMessageListener;
 import me.vurt.nms.core.jms.util.DestinationConstants;
 import me.vurt.nms.core.node.data.impl.RegisterResponseImpl;
 import me.vurt.nms.core.node.server.dao.DAOUtil;
@@ -48,10 +47,7 @@ public class ServerLuncher implements Luncher {
 
 		heartBeatListener = JMSFactory.getMessageListener(JMSFactory
 				.createQueueDestination(DestinationConstants.HEART_BEAT_QUEUE));
-		if (heartBeatListener instanceof StaticMessageListener) {
-			((StaticMessageListener) heartBeatListener)
-					.addMessageHandler(new HeartBeatHandler());
-		}
+		heartBeatListener.addMessageHandler(new HeartBeatHandler());
 		heartBeatListener.start();
 
 		registrationListener = JMSFactory
@@ -62,10 +58,7 @@ public class ServerLuncher implements Luncher {
 		registrationListener.setResponseTimeToLive(5000);
 		registrationListener
 				.setResponseDeliveryMode(DeliveryMode.NON_PERSISTENT);
-		if (registrationListener instanceof StaticMessageListener) {
-			((StaticMessageListener) registrationListener)
-					.addMessageHandler(new RegistrationHandler());
-		}
+		registrationListener	.addMessageHandler(new RegistrationHandler());
 		registrationListener.start();
 	}
 
