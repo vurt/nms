@@ -18,11 +18,12 @@ import org.springframework.jms.support.converter.SimpleMessageConverter;
 
 /**
  * 
- * 可以将{@link File}和{@link InputStream}类型的数据转换成{@link BlobMessage}
+ * 可以将{@link File}、{@link InputStream}和{@link BlobResponse}类型的数据转换成{@link BlobMessage}
  * 发送的消息转换器，对其他类型对象的处理与 {@link SimpleMessageConverter}一致
  * 
  * <pre>
  * 发送时{@link File}和{@link InputStream}将会被转换成{@link BlobMessage}
+ * 发送时{@link BlobResponse#getInputStream()}返回值不为空的{@link BlobResponse}将会被转换成{@link BlobMessage}
  * 接收时{@link BlobMessage}将会被转换成{@link InputStream}
  * </pre>
  * 
@@ -37,9 +38,15 @@ public class FileMessageConverter extends SimpleMessageConverter {
 			return createMessageForFile((File) object, session);
 		} else if (object instanceof InputStream) {
 			return createMessageForInputStream((InputStream) object, session);
-		} else {
-			return super.toMessage(object, session);
+		} else if (object instanceof BlobResponse) {
+			//TODO:BlobResponse中的流和普通响应不能被同时发送，看以后有没有需要同时发送的场景
+			if (((BlobResponse) object).getInputStream() != null) {
+				return createMessageForInputStream(
+						((BlobResponse) object).getInputStream(), session);
+			}
+			//如果大对象响应内没有流，则当做普通响应发送
 		}
+		return super.toMessage(object, session);
 	}
 
 	@Override
@@ -54,7 +61,9 @@ public class FileMessageConverter extends SimpleMessageConverter {
 
 	/**
 	 * 将要发送的文件转成{@link BlobMessage}
-	 * @param file 要发送的文件
+	 * 
+	 * @param file
+	 *            要发送的文件
 	 * @param session
 	 * @return
 	 * @throws JMSException
@@ -73,7 +82,8 @@ public class FileMessageConverter extends SimpleMessageConverter {
 	/**
 	 * 将要发送的流转换成{@link BlobMessage}
 	 * 
-	 * @param is 输入流
+	 * @param is
+	 *            输入流
 	 * @param session
 	 * @return {@link BlobMessage}
 	 * @throws JMSException
