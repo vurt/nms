@@ -11,25 +11,23 @@ import me.vurt.nms.core.file.util.RootFolderWalker;
 import me.vurt.nms.core.node.Node;
 
 /**
- * NMS文件系统的根目录，保存文件夹下所有文件和子文件夹(层次不限)的信息，信息包括：相对路径、文件内容的MD5(如果是文件)<BR>
+ * NMS文件系统的目录内容，保存文件夹下所有文件和子文件夹(层次不限)的信息，信息包括：相对路径、文件内容的MD5(如果是文件)<BR>
  * 该类型的对象可以通过网络发送
  * 
  * @author Vurt
  * 
  */
-public class RootFolder implements Data {
+public class FolderContent implements Data {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 4924162401212362067L;
+	
 	/**
-	 * 根目录在文件系统中的绝对路径，不作为两个FolderInfo相等的条件
+	 * 目录在本地文件系统中的绝对路径，不作为两个FolderContent相等的条件
 	 */
 	private String absolutePath;
-	/**
-	 * 根目录名，文件夹在NMS系统内的名称，可以与文件系统中的名称不同，但在每个{@link Node 节点}中必须唯一
-	 */
-	private String name;
+
 	/**
 	 * 所属节点ID
 	 */
@@ -46,10 +44,9 @@ public class RootFolder implements Data {
 	 * @param name
 	 *            根目录名称
 	 */
-	public RootFolder(String node, File rootFolder, String name) {
+	public FolderContent(String node, File rootFolder) {
 		this.node = node;
 		this.absolutePath = rootFolder.getAbsolutePath();
-		this.name = name;
 		this.fileContents = new HashMap<String, String>();
 	}
 
@@ -67,15 +64,6 @@ public class RootFolder implements Data {
 	 */
 	public String getAbsolutePath() {
 		return absolutePath;
-	}
-
-	/**
-	 * 根目录名，文件夹在NMS系统内的名称，可以与文件系统中的名称不同，但在每个{@link Node 节点}中必须唯一
-	 * 
-	 * @return
-	 */
-	public String getName() {
-		return name;
 	}
 
 	private boolean initialized = false;
@@ -104,6 +92,7 @@ public class RootFolder implements Data {
 	 *            文件相对路径
 	 * @return 不存在则返回null
 	 * @throws RuntimeException
+	 * 
 	 *             如果根目录不是在创建它的节点上
 	 */
 	public File getFile(String path) {

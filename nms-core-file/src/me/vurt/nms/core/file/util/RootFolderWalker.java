@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Map.Entry;
 
-import me.vurt.nms.core.file.data.RootFolder;
+import me.vurt.nms.core.file.data.FolderContent;
 import me.vurt.nms.core.file.util.DigestTool.DigestAlgorithm;
 
 import org.apache.commons.io.DirectoryWalker;
@@ -24,12 +24,12 @@ public class RootFolderWalker extends DirectoryWalker<Entry<String, String>> {
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(RootFolderWalker.class);
 
-	private RootFolder rootFolder;
+	private FolderContent rootFolder;
 	private File root;
 	private Collection<Entry<String, String>> contents;
 	private DigestTool digestTool;
 
-	public RootFolderWalker(RootFolder rootFolder) {
+	public RootFolderWalker(FolderContent rootFolder) {
 		this.rootFolder = rootFolder;
 		root = new File(rootFolder.getAbsolutePath());
 		// 使用map到Collection接口的适配器，在遍历过程中直接将结果写入RootFolder中，节约内存
@@ -41,18 +41,18 @@ public class RootFolderWalker extends DirectoryWalker<Entry<String, String>> {
 	}
 
 	/**
-	 * 开始遍历，遍历时会自动填充{@link RootFolder}的contents信息，开始后无法取消，除非发生异常<BR>
+	 * 开始遍历，遍历时会自动填充{@link FolderContent}的contents信息，开始后无法取消，除非发生异常<BR>
 	 * 如果文件夹中东西很多那么会很慢
 	 */
 	public void start() {
 		try {
-			LOGGER.debug("开始计算根目录[" + rootFolder.getName() + "]的内容信息");
+			LOGGER.debug("开始计算根目录[" + rootFolder.getAbsolutePath() + "]的内容信息");
 			long start = System.currentTimeMillis();
 			walk(root, contents);
 			// 删除根目录
 			rootFolder.removeContent("");
 			long end = System.currentTimeMillis();
-			LOGGER.debug("根目录[" + rootFolder.getName() + "]内容信息计算完成，耗时:"
+			LOGGER.debug("根目录[" + rootFolder.getAbsolutePath() + "]内容信息计算完成，耗时:"
 					+ (end - start) + "ms，根目录中子文件和文件夹总个数:"
 					+ rootFolder.getFileContents().size());
 		} catch (IOException e) {

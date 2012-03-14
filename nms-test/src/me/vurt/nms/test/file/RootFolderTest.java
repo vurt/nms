@@ -8,7 +8,7 @@ import java.util.Properties;
 
 import me.vurt.nms.core.common.tools.GlobalConfigFileReader;
 import me.vurt.nms.core.file.NMSFileSystem;
-import me.vurt.nms.core.file.data.RootFolder;
+import me.vurt.nms.core.file.data.FolderContent;
 
 import org.apache.log4j.PropertyConfigurator;
 import org.junit.Assert;
@@ -40,12 +40,12 @@ public class RootFolderTest {
 	public void test() throws Exception {
 		initLog();
 
-		RootFolder rootFolder = NMSFileSystem.createInstance(new File(
+		FolderContent rootFolder = NMSFileSystem.createInstance(new File(
 				"D:/apache-tomcat-6.0.33"), "tomcat");
 
 		rootFolder.reloadContentInfo();
 
-		RootFolder rootFolder1 = NMSFileSystem.createInstance(new File(
+		FolderContent rootFolder1 = NMSFileSystem.createInstance(new File(
 				"D:/RootFolderTest/apache-tomcat-6.0.33"), "tomcat1");
 
 		rootFolder1.reloadContentInfo();

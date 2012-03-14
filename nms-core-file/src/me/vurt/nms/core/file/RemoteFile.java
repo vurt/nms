@@ -8,7 +8,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 
-import me.vurt.nms.core.file.data.RootFolder;
+import me.vurt.nms.core.file.data.FolderContent;
 import me.vurt.nms.core.file.exception.InvalidFilePathException;
 
 import org.apache.commons.lang.StringUtils;
@@ -29,7 +29,7 @@ public class RemoteFile implements NFile {
 	/**
 	 * 根目录名称
 	 */
-	private RootFolder root;
+	private FolderContent root;
 
 	/**
 	 * 文件访问路径
@@ -46,7 +46,7 @@ public class RemoteFile implements NFile {
 	 * @param path
 	 *            文件路径
 	 */
-	public RemoteFile(String node, RootFolder rootFolder, String path) {
+	public RemoteFile(String node, FolderContent rootFolder, String path) {
 		if (!path.startsWith("" + SEPARATOR_CHAR)) {
 			throw new InvalidFilePathException("无效的文件路径，远程文件路径必须以\'"
 					+ SEPARATOR_CHAR + "\'开头");
@@ -120,7 +120,7 @@ public class RemoteFile implements NFile {
 	/**
 	 * @return 文件所属根目录
 	 */
-	public RootFolder getRootFolder() {
+	public FolderContent getRootFolder() {
 		return root;
 	}
 
